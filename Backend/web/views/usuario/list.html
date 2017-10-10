@@ -1,0 +1,76 @@
+
+<md-button ng-href="#/seguridad/usuarios/nuevo" class="md-fab md-primary md-fab-bottom-right"  style="margin-left: 30%; position: fixed; z-index: 21;">
+    <md-icon class="material-icons">add</md-icon>
+</md-button>
+<div style="background-color: transparent; color: black;">
+    <div class="md-toolbar-tools">
+        <h2>
+            <span><md-icon class="material-icons">person_pin</md-icon> Usuarios</span>
+        </h2>
+        <span flex></span>
+        <md-menu style="display: inline-block;">
+            <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+                <md-icon class="material-icons">more_vert</md-icon>
+            </md-button>
+            <md-menu-content width="1">
+                <md-menu-item>
+                    <md-button ng-click="listar(1)" >
+                        <md-icon class="material-icons">list</md-icon>
+                        Listado
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-click="listar(0)" >
+                        <md-icon class="material-icons">dashboard</md-icon>
+                        Cuadricula
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+    </div>
+</div>
+<div class="col-md-12 row" ng-if="!listado">
+    <div ng-repeat="usuario in usuarios" class="col-md-4 card-evento">
+        <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline row" style="text-overflow: ellipsis;width: 100%;overflow: hidden;"><i class="material-icons">
+                            person_pin</i> {{usuario.email}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                Nombre: {{ usuario.nombre}}
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end">
+                <md-button ng-href="#/seguridad/usuarios/editar/{{usuario.id}}" class="md-raised" aria-label="Editar">
+                    <md-icon class="material-icons">edit_mode</md-icon> Editar
+                </md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</div>
+<md-card ng-if="listado">
+    <md-card-content class="table-responsive">
+        <table class="table table-bordered table-hover"   tr-ng-grid=""  page-items="15" items="usuarios" selection-mode="none">
+            <thead>
+                <tr >
+                    <th field-name="nombre" display-name="Nombre"></th>
+                    <th field-name="email" display-name="Email"></th>
+                    <th display-name="Acciones"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+            <md-button ng-href="#/seguridad/usuarios/editar/{{gridItem.id}}" class="md-fab md-mini md-mini-2" aria-label="Editar">
+                <md-icon class="material-icons">edit_mode</md-icon>
+            </md-button>
+            <!--            <md-button ng-click='eliminar(gridItem)' class="md-fab md-mini md-mini-2" aria-label="Eliminar">
+                            <md-icon class="material-icons">delete</md-icon>
+                        </md-button>-->
+            </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-card-content>
+</md-card>

@@ -6,6 +6,7 @@
 package com.javastore.service;
 
 import java.util.List;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 
 /**
@@ -15,9 +16,11 @@ import javax.persistence.EntityManager;
 public abstract class AbstractFacade<T> {
 
     private Class<T> entityClass;
+    public Logger logger = null;
 
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
+        this.logger = Logger.getLogger(entityClass.getName());
     }
 
     protected abstract EntityManager getEntityManager();
@@ -60,5 +63,5 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
 }

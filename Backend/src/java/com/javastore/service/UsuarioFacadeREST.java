@@ -5,8 +5,14 @@
  */
 package com.javastore.service;
 
+import com.javastore.dtos.ResponseHeader;
 import com.javastore.entities.Usuario;
+import com.javastore.utils.Crypto;
+import com.javastore.utils.Mensajes;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,7 +31,7 @@ import javax.ws.rs.core.MediaType;
  * @author fjbatresv
  */
 @Stateless
-@Path("com.javastore.entities.usuario")
+@Path("usuario")
 public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
 
     @PersistenceContext(unitName = "BackendPU")
@@ -36,23 +42,80 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Usuario entity) {
-        super.create(entity);
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseHeader add(Usuario entity) {
+        ResponseHeader respuesta = new ResponseHeader();
+        try {
+            entity.setPassword(Crypto.sha1(entity.getPassword()));
+            List<Usuario> tmp = em.createNamedQuery("Usuario.findByEmail", Usuario.class)
+                    .setParameter("email", entity.getEmail())
+                    .getResultList();
+            if (!tmp.isEmpty()) {
+                respuesta.setCodigo(1);
+                respuesta.setMensaje(Mensajes.usuarioRepetido);
+                respuesta.setResponse(null);
+                respuesta.setResultado(false);
+                this.logger.log(Level.INFO, "Usuario repetido");
+            } else {
+                super.create(entity);
+                respuesta.setCodigo(0);
+                respuesta.setMensaje(Mensajes.usuarioCreado);
+                respuesta.setResponse(entity);
+                respuesta.setResultado(true);
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            this.logger.log(Level.SEVERE, "Password no encriptado");
+        }
+        return respuesta;
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Usuario entity) {
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseHeader edit(@PathParam("id") Integer id, Usuario entity) {
+        ResponseHeader respuesta = new ResponseHeader();
+        Usuario valid = em.createNamedQuery("Usuario.findById", Usuario.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        if (entity.getPassword() != null && !entity.getPassword().isEmpty()
+                && !entity.getPassword().equals(valid.getPassword())) {
+            this.logger.log(Level.INFO, "Password modificado");
+            try {
+                entity.setPassword(Crypto.sha1(entity.getPassword()));
+            } catch (NoSuchAlgorithmException ex) {
+                this.logger.log(Level.SEVERE, "Password no encriptado", ex);
+            }
+        } else {
+            entity.setPassword(valid.getPassword());
+        }
         super.edit(entity);
+        respuesta.setCodigo(0);
+        respuesta.setMensaje(Mensajes.usuarioEditado);
+        respuesta.setResponse(entity);
+        respuesta.setResultado(true);
+        return respuesta;
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseHeader remove(@PathParam("id") Integer id) {
+        ResponseHeader respuesta = new ResponseHeader();
+        try {
+            super.remove(super.find(id));
+            respuesta.setCodigo(0);
+            respuesta.setMensaje(Mensajes.usuarioEliminado);
+            respuesta.setResultado(true);
+            this.logger.log(Level.INFO, "Usuario " + String.valueOf(id) + " eliminado");
+        } catch (Exception ex) {
+            respuesta.setCodigo(1);
+            respuesta.setMensaje(Mensajes.usuarioNoEliminado);
+            respuesta.setResultado(false);
+            this.logger.log(Level.WARNING, ex.getLocalizedMessage(), ex);
+        }
+        return respuesta;
     }
 
     @GET
@@ -87,5 +150,5 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

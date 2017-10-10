@@ -23,10 +23,9 @@ public class ApplicationConfig extends Application {
     }
 
     /**
-     * Do not modify addRestResourceClasses() method.
-     * It is automatically populated with
-     * all resources defined in the project.
-     * If required, comment out calling this method in getClasses().
+     * Do not modify addRestResourceClasses() method. It is automatically
+     * populated with all resources defined in the project. If required, comment
+     * out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.javastore.service.CarritoFacadeREST.class);
@@ -41,9 +40,10 @@ public class ApplicationConfig extends Application {
         resources.add(com.javastore.service.ProductoFacadeREST.class);
         resources.add(com.javastore.service.RolFacadeREST.class);
         resources.add(com.javastore.service.RolMenuFacadeREST.class);
+        resources.add(com.javastore.service.SessionFacadeREST.class);
         resources.add(com.javastore.service.TransaccionFacadeREST.class);
         resources.add(com.javastore.service.UsuarioFacadeREST.class);
         resources.add(com.javastore.service.UsuarioRolFacadeREST.class);
     }
-    
+
 }
