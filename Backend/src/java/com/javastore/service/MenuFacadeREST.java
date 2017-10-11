@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author fjbatresv
  */
 @Stateless
-@Path("com.javastore.entities.menu")
+@Path("menu")
 public class MenuFacadeREST extends AbstractFacade<Menu> {
 
     @PersistenceContext(unitName = "BackendPU")
@@ -33,33 +33,6 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
 
     public MenuFacadeREST() {
         super(Menu.class);
-    }
-
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Menu entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Menu entity) {
-        super.edit(entity);
-    }
-
-    @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
-    }
-
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Menu find(@PathParam("id") Integer id) {
-        return super.find(id);
     }
 
     @GET
@@ -87,5 +60,5 @@ public class MenuFacadeREST extends AbstractFacade<Menu> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

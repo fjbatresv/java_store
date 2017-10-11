@@ -28,7 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RolMenu.findAll", query = "SELECT r FROM RolMenu r")
-    , @NamedQuery(name = "RolMenu.findById", query = "SELECT r FROM RolMenu r WHERE r.id = :id")})
+    , @NamedQuery(name = "RolMenu.findById", query = "SELECT r FROM RolMenu r WHERE r.id = :id")
+    , @NamedQuery(name = "RolMenu.findMenusByRolId", query = "SELECT r.menuId FROM RolMenu r WHERE r.rolId.id = :id")
+    , @NamedQuery(name = "RolMenu.findByRolId", query = "SELECT r FROM RolMenu r WHERE r.rolId.id = :id")})
 public class RolMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -99,5 +101,5 @@ public class RolMenu implements Serializable {
     public String toString() {
         return "com.javastore.entities.RolMenu[ id=" + id + " ]";
     }
-    
+
 }

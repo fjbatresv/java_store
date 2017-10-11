@@ -25,6 +25,26 @@ angular.module('doorman', ['ngMaterial', 'ngRoute', 'ngCookies', 'ngResource',
                         controller: 'UsuarioEditController as ctr',
                         templateUrl: 'views/usuario/form.html'
                     })
+                    .when('/seguridad/usuarios/roles/:id', {
+                        controller: 'UsuarioRolEditController as ctr',
+                        templateUrl: 'views/usuario/roles.html'
+                    })
+                    .when('/seguridad/roles', {
+                        controller: 'RolListController as ctr',
+                        templateUrl: 'views/rol/list.html'
+                    })
+                    .when('/seguridad/roles/nuevo', {
+                        controller: 'RolAddController as ctr',
+                        templateUrl: 'views/rol/form.html'
+                    })
+                    .when('/seguridad/roles/editar/:id', {
+                        controller: 'RolEditController as ctr',
+                        templateUrl: 'views/rol/form.html'
+                    })
+                    .when('/seguridad/roles/menus/:id', {
+                        controller: 'RolMenuEditController as ctr',
+                        templateUrl: 'views/rol/menus.html'
+                    })
                     .when('/', {
                         controller: 'MainController as ctr',
                         templateUrl: 'views/main.html',

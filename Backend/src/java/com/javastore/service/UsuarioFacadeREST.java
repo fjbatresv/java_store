@@ -6,17 +6,19 @@
 package com.javastore.service;
 
 import com.javastore.dtos.ResponseHeader;
+import com.javastore.entities.Rol;
 import com.javastore.entities.Usuario;
+import com.javastore.entities.UsuarioRol;
 import com.javastore.utils.Crypto;
 import com.javastore.utils.Mensajes;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -115,6 +117,46 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
             respuesta.setResultado(false);
             this.logger.log(Level.WARNING, ex.getLocalizedMessage(), ex);
         }
+        return respuesta;
+    }
+
+    @GET
+    @Path("roles/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Rol> roles(@PathParam("id") Integer id) {
+        Usuario usuario = em.createNamedQuery("Usuario.findById", Usuario.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        return em.createNamedQuery("UsuarioRol.findRolesByUsuario", Rol.class)
+                .setParameter("usuarioId", usuario)
+                .getResultList();
+    }
+
+    @PUT
+    @Path("roles/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public ResponseHeader setRoles(@PathParam("id") Integer id, List<Rol> roles) {
+        ResponseHeader respuesta = new ResponseHeader();
+        Usuario usuario = em.createNamedQuery("Usuario.findById", Usuario.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        List<UsuarioRol> relaciones = em.createNamedQuery("UsuarioRol.findByUsuario", UsuarioRol.class)
+                .setParameter("usuarioId", usuario)
+                .getResultList();
+        for (UsuarioRol relacion : relaciones) {
+            em.remove(relacion);
+        }
+        for (Rol rol : roles) {
+            UsuarioRol relacion = new UsuarioRol();
+            relacion.setRolId(rol);
+            relacion.setUsuarioId(usuario);
+            em.persist(relacion);
+        }
+        this.logger.log(Level.INFO, "Roles actualizados para el usuario " + String.valueOf(id), roles);
+        respuesta.setCodigo(0);
+        respuesta.setMensaje(Mensajes.usuarioRolesDone);
+        respuesta.setResultado(true);
         return respuesta;
     }
 

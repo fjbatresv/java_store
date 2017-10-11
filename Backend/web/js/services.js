@@ -4,15 +4,12 @@ angular.module('doorman.services', [])
         .factory("notify", ['$rootScope', '$timeout', function ($scope, $timeout) {
                 var currentMessage = {};
                 var currentTimeout = false;
-
                 return {
                     setMessage: function (message) {
                         currentMessage = message;
                         $scope.showNotify = true;
-
                         if (currentTimeout)
                             $timeout.cancel(currentTimeout);
-
                         currentTimeout = $timeout(function () {
                             $scope.showNotify = false;
                             currentTimeout = false;
@@ -50,7 +47,25 @@ angular.module('doorman.services', [])
                 findAll: {method: 'GET', isArray: true},
                 add: {method: 'POST', isArray: false},
                 edit: {method: 'PUT', isArray: false},
-                delete: {method: 'DELETE', isArray: false}
+                delete: {method: 'DELETE', isArray: false},
+                roles: {method: 'GET', isArray: true, url: 'rest/usuario/roles/:id', params: {id: '@id'}},
+                setRoles: {method: 'PUT', isArray: false, url: 'rest/usuario/roles/:id', params: {id: '@id'}}
+            });
+        })
+        .factory("RolFactory", function ($resource) {
+            return $resource('rest/rol/:id', {id: '@id'}, {
+                find: {mehtod: 'GET', isArray: false},
+                findAll: {method: 'GET', isArray: true},
+                add: {method: 'POST', isArray: false},
+                edit: {method: 'PUT', isArray: false},
+                delete: {method: 'DELETE', isArray: false},
+                menus: {method: 'GET', isArray: true, url: 'rest/rol/menus/:id', params: {id: '@id'}},
+                setMenus: {method: 'PUT', isArray: false, url: 'rest/rol/menus/:id', params: {id: '@id'}}
+            });
+        })
+        .factory("MenuFactory", function ($resource) {
+            return $resource('rest/menu/:id', {id: '@id'}, {
+                findAll: {method: 'GET', isArray: true},
             });
         })
         .factory("SessionFactory", function ($resource) {

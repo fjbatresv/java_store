@@ -28,7 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UsuarioRol.findAll", query = "SELECT u FROM UsuarioRol u")
-    , @NamedQuery(name = "UsuarioRol.findById", query = "SELECT u FROM UsuarioRol u WHERE u.id = :id")})
+    , @NamedQuery(name = "UsuarioRol.findById", query = "SELECT u FROM UsuarioRol u WHERE u.id = :id")
+    , @NamedQuery(name = "UsuarioRol.findRolesByUsuario", query = "SELECT u.rolId FROM UsuarioRol u WHERE u.usuarioId = :usuarioId")
+    , @NamedQuery(name = "UsuarioRol.findByUsuario", query = "SELECT u FROM UsuarioRol u WHERE u.usuarioId = :usuarioId")})
+
 public class UsuarioRol implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -99,5 +102,5 @@ public class UsuarioRol implements Serializable {
     public String toString() {
         return "com.javastore.entities.UsuarioRol[ id=" + id + " ]";
     }
-    
+
 }

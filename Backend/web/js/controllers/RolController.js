@@ -1,30 +1,51 @@
 'use strict';
 angular.module('doorman.controllers')
-        .controller('UsuarioListController', function ($rootScope, $scope, $location, $cookies,
-                UsuarioFactory) {
-            $scope.usuarios = [];
-            UsuarioFactory.findAll(function (res) {
-                $scope.usuarios = res;
-            });
-            var originatorEv;
-            $scope.openMenu = function ($mdOpenMenu, ev) {
-                originatorEv = ev;
-                $mdOpenMenu(ev);
+        .controller('RolListController', function ($rootScope, $scope, $location, $cookies,
+                RolFactory, $mdToast, $mdDialog) {
+            $scope.roles = [];
+            $scope.cargar = function () {
+                $scope.roles = [];
+                RolFactory.findAll(function (res) {
+                    $scope.roles = res;
+                });
             }
-            $scope.listado = true;
-            $scope.listar = function (i) {
-                if (i === 1) {
-                    $scope.listado = true;
-                } else {
-                    $scope.listado = false;
-                }
+            $scope.cargar();
+            $scope.eliminar = function (rol) {
+                var confirm = $mdDialog.confirm()
+                        .title('¿Estas seguro?')
+                        .textContent('Se eliminara el rol "' + rol.nombre + '"')
+                        .ok('Si, eliminar')
+                        .cancel('Cancelar');
+                $mdDialog.show(confirm).then(function () {
+                    RolFactory.delete({'id': rol.id}, function (res) {
+                        if (res.codigo === 0) {
+                            $mdToast.show(
+                                    $mdToast.simple()
+                                    .textContent(res.mensaje)
+                                    .position('top right')
+                                    .hideDelay(1500)
+                                    );
+                            $scope.cargar();
+                        } else {
+                            $mdDialog.show(
+                                    $mdDialog.alert()
+                                    .parent(angular.element(document.querySelector('#popupContainer')))
+                                    .clickOutsideToClose(true)
+                                    .title('Hubo un problema')
+                                    .textContent(res.mensaje)
+                                    .ok('Ok')
+                                    );
+                        }
+                    });
+                }, function () {
+                });
             }
         })
-        .controller('UsuarioAddController', function ($location, $scope, $mdToast, $mdDialog, UsuarioFactory) {
-            $scope.usuario = {};
-            $scope.titulo = 'Nuevo usuario';
+        .controller('RolAddController', function ($location, $scope, $mdToast, $mdDialog, RolFactory) {
+            $scope.rol = {};
+            $scope.titulo = 'Nuevo rol';
             $scope.guardar = function () {
-                UsuarioFactory.add($scope.usuario, function (res) {
+                RolFactory.add($scope.rol, function (res) {
                     if (res.codigo === 0) {
                         $mdToast.show(
                                 $mdToast.simple()
@@ -46,20 +67,19 @@ angular.module('doorman.controllers')
                 });
             }
             $scope.cancel = function () {
-                $location.path('/seguridad/usuarios');
+                $location.path('/seguridad/roles');
             }
         })
-        .controller('UsuarioEditController', function ($location, $scope, $mdToast, $mdDialog, $routeParams, UsuarioFactory) {
-            $scope.usuario = {};
-            $scope.titulo = 'Editar usuario';
-            UsuarioFactory.find({id: $routeParams.id}, function (res) {
-                $scope.usuario = res;
-                $scope.usuario.password = null;
-                $scope.titulo = 'Editar usuario "' + res.email + '"';
+        .controller('RolEditController', function ($location, $scope, $mdToast, $mdDialog, $routeParams, RolFactory) {
+            $scope.rol = {};
+            $scope.titulo = 'Editar rol';
+            RolFactory.find({id: $routeParams.id}, function (res) {
+                $scope.rol = res;
+                $scope.titulo = 'Editar rol "' + res.nombre + '"';
             });
             $scope.edit = true;
             $scope.guardar = function () {
-                UsuarioFactory.edit({id: $scope.usuario.id}, $scope.usuario, function (res) {
+                RolFactory.edit({id: $scope.rol.id}, $scope.rol, function (res) {
                     if (res.codigo === 0) {
                         $mdToast.show(
                                 $mdToast.simple()
@@ -81,23 +101,29 @@ angular.module('doorman.controllers')
                 });
             }
             $scope.cancel = function () {
-                $location.path('/seguridad/usuarios');
+                $location.path('/seguridad/roles');
             }
         })
-        .controller("UsuarioRolEditController", function ($scope, $location, $routeParams, $mdToast, $mdDialog,
-                UsuarioFactory, RolFactory) {
-            $scope.roles = [];
+        .controller('RolMenuEditController', function ($location, $scope, $mdToast, $mdDialog, $routeParams,
+                RolFactory, MenuFactory) {
+            $scope.rol = {};
+            $scope.menus = [];
             $scope.selected = [];
             $scope.listado = [];
-            RolFactory.findAll(function (res) {
-                $scope.roles = res;
-                UsuarioFactory.roles({id: $routeParams.id}, function (rea) {
+            $scope.titulo = 'Editar menus del rol';
+            RolFactory.find({id: $routeParams.id}, function (res) {
+                $scope.rol = res;
+                $scope.titulo = 'Editar menus del rol "' + res.nombre + '"';
+            });
+            MenuFactory.findAll(function (res) {
+                $scope.menus = res;
+                RolFactory.menus({id: $routeParams.id}, function (rea) {
                     $scope.selected = rea;
                     $scope.order();
                 });
             });
             $scope.order = function () {
-                angular.forEach($scope.roles, function (rol) {
+                angular.forEach($scope.menus, function (rol) {
                     rol.selected = false;
                     angular.forEach($scope.selected, function (sel) {
                         if (sel.id === rol.id) {
@@ -108,12 +134,12 @@ angular.module('doorman.controllers')
                 });
             }
             $scope.cancel = function () {
-                $location.path('/seguridad/usuarios');
+                $location.path('/seguridad/roles');
             }
             $scope.guardar = function () {
                 var cambios = [];
                 console.log('guardando');
-                angular.forEach($scope.roles, function (rol) {
+                angular.forEach($scope.menus, function (rol) {
                     angular.forEach($scope.listado, function (sel) {
                         if (sel.selected && rol.id === sel.id) {
                             delete rol.selected;
@@ -121,7 +147,7 @@ angular.module('doorman.controllers')
                         }
                     });
                 });
-                UsuarioFactory.setRoles({id: $routeParams.id}, cambios, function (res) {
+                RolFactory.setMenus({id: $routeParams.id}, cambios, function (res) {
                     if (res.codigo === 0) {
                         $mdToast.show(
                                 $mdToast.simple()

@@ -6,6 +6,11 @@ angular.module('doorman.controllers')
                     nombre: 'Usuarios',
                     icono: 'person_pin',
                     path: '/seguridad/usuarios'
+                },
+                {
+                    nombre: 'Roles',
+                    icono: 'verified_user',
+                    path: '/seguridad/roles'
                 }
             ];
         });
