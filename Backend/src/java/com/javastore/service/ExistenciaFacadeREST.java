@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author fjbatresv
  */
 @Stateless
-@Path("com.javastore.entities.existencia")
+@Path("existencia")
 public class ExistenciaFacadeREST extends AbstractFacade<Existencia> {
 
     @PersistenceContext(unitName = "BackendPU")
@@ -35,31 +35,20 @@ public class ExistenciaFacadeREST extends AbstractFacade<Existencia> {
         super(Existencia.class);
     }
 
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Existencia entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Existencia entity) {
-        super.edit(entity);
-    }
-
-    @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
-    }
-
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Existencia find(@PathParam("id") Integer id) {
         return super.find(id);
+    }
+
+    @GET
+    @Path("producto/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Existencia> findByProducto(@PathParam("id") Integer id) {
+        return em.createNamedQuery("Existencia.findByProductoId", Existencia.class)
+                .setParameter("id", id)
+                .getResultList();
     }
 
     @GET
@@ -87,5 +76,5 @@ public class ExistenciaFacadeREST extends AbstractFacade<Existencia> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

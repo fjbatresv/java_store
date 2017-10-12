@@ -5,8 +5,15 @@
  */
 package com.javastore.service;
 
+import com.javastore.dtos.ResponseHeader;
+import com.javastore.entities.Categoria;
+import com.javastore.entities.Existencia;
 import com.javastore.entities.Producto;
+import com.javastore.entities.ProductoCategoria;
+import com.javastore.utils.Mensajes;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,7 +32,7 @@ import javax.ws.rs.core.MediaType;
  * @author fjbatresv
  */
 @Stateless
-@Path("com.javastore.entities.producto")
+@Path("producto")
 public class ProductoFacadeREST extends AbstractFacade<Producto> {
 
     @PersistenceContext(unitName = "BackendPU")
@@ -36,23 +43,121 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     }
 
     @POST
-    @Override
+    @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Producto entity) {
-        super.create(entity);
+    public ResponseHeader add(Producto entity) {
+        ResponseHeader respuesta = new ResponseHeader();
+        List<Producto> valid = em.createNamedQuery("Producto.findByCodigo", Producto.class)
+                .setParameter("codigo", entity.getCodigo())
+                .getResultList();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.productoCreado);
+        if (valid.isEmpty()) {
+            super.create(entity);
+        } else {
+            respuesta.setCodigo(1);
+            respuesta.setResultado(false);
+            respuesta.setMensaje(Mensajes.productoNoCreado);
+            this.logger.log(Level.WARNING, "Producto con codigo repetido", entity);
+        }
+        respuesta.setResponse(entity);
+        return respuesta;
     }
 
     @PUT
     @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Producto entity) {
-        super.edit(entity);
+    public ResponseHeader edit(@PathParam("id") Integer id, Producto entity) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.productoEditado);
+        List<Producto> valid = em.createNamedQuery("Producto.findByCodigo", Producto.class)
+                .setParameter("codigo", entity.getCodigo())
+                .getResultList();
+        if ((valid.size() > 0 && valid.get(0).getId() == entity.getId()) || valid.isEmpty()) {
+            super.edit(entity);
+        } else {
+            respuesta.setCodigo(1);
+            respuesta.setResultado(false);
+            respuesta.setMensaje(Mensajes.productoNoEditado);
+        }
+        respuesta.setResponse(entity);
+        return respuesta;
     }
 
     @DELETE
+    @Produces({MediaType.APPLICATION_JSON})
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    public ResponseHeader remove(@PathParam("id") Integer id) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.productoEliminado);
+        try {
+            super.remove(super.find(id));
+            this.logger.log(Level.INFO, "Producto eliminado", id);
+        } catch (Exception ex) {
+            respuesta.setCodigo(1);
+            respuesta.setResultado(false);
+            respuesta.setMensaje(Mensajes.productoNoEliminado);
+            this.logger.log(Level.WARNING, "No se pudo eliminar producto", ex);
+        }
+        return respuesta;
+    }
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("categorias/{id}")
+    public List<Categoria> getCategorias(@PathParam("id") Integer id) {
+        return em.createNamedQuery("ProductoCategoria.findCategoriaByProductoId", Categoria.class)
+                .setParameter("id", id)
+                .getResultList();
+    }
+
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Path("categorias/{id}")
+    public ResponseHeader setCategorias(@PathParam("id") Integer id, List<Categoria> categorias) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.productoCategorias);
+        Producto producto = super.find(id);
+        List<ProductoCategoria> relaciones = em.createNamedQuery("ProductoCategoria.findByProductoId", ProductoCategoria.class)
+                .setParameter("id", id)
+                .getResultList();
+        for (ProductoCategoria relacion : relaciones) {
+            em.remove(relacion);
+        }
+        for (Categoria categoria : categorias) {
+            ProductoCategoria relacion = new ProductoCategoria();
+            relacion.setProductoId(producto);
+            relacion.setCategoriaId(categoria);
+            em.persist(relacion);
+        }
+        this.logger.log(Level.INFO, "Categorias del producto actualizadas", producto);
+        return respuesta;
+    }
+
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Path("existencia/{id}")
+    public ResponseHeader setExistencia(@PathParam("id") Integer id, Existencia existencia) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.productoExistencia);
+        Producto producto = super.find(id);
+        existencia.setProductoId(producto);
+        existencia.setFechaHora(new Date());
+        em.persist(existencia);
+        this.logger.log(Level.INFO, "Existencias actualizadas", existencia);
+        return respuesta;
     }
 
     @GET
@@ -87,5 +192,5 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

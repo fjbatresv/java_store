@@ -9,6 +9,42 @@ angular.module('doorman', ['ngMaterial', 'ngRoute', 'ngCookies', 'ngResource',
                         controller: 'LoginController as ctr',
                         templateUrl: 'views/login.html',
                     })
+                    .when('/catalogos', {
+                        controller: 'CatalogosController as ctr',
+                        templateUrl: 'views/seguridad/opciones.html',
+                    })
+                    .when('/catalogos/categorias', {
+                        controller: 'CategoriaListController as ctr',
+                        templateUrl: 'views/categoria/list.html',
+                    })
+                    .when('/catalogos/categorias/nuevo', {
+                        controller: 'CategoriaAddController as ctr',
+                        templateUrl: 'views/categoria/form.html',
+                    })
+                    .when('/catalogos/categorias/editar/:id', {
+                        controller: 'CategoriaEditController as ctr',
+                        templateUrl: 'views/categoria/form.html',
+                    })
+                    .when('/catalogos/productos', {
+                        controller: 'ProductoListController as ctr',
+                        templateUrl: 'views/producto/list.html',
+                    })
+                    .when('/catalogos/productos/nuevo', {
+                        controller: 'ProductoAddController as ctr',
+                        templateUrl: 'views/producto/form.html',
+                    })
+                    .when('/catalogos/productos/editar/:id', {
+                        controller: 'ProductoEditController as ctr',
+                        templateUrl: 'views/producto/form.html',
+                    })
+                    .when('/catalogos/productos/categorias/:id', {
+                        controller: 'ProductoCategoriasController as ctr',
+                        templateUrl: 'views/producto/categorias.html'
+                    })
+                    .when('/catalogos/productos/existencia/:id', {
+                        controller: 'ProductoExistenciaController as ctr',
+                        templateUrl: 'views/producto/existencia.html'
+                    })
                     .when('/seguridad', {
                         controller: 'SeguridadController as ctr',
                         templateUrl: 'views/seguridad/opciones.html',

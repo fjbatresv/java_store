@@ -29,4 +29,20 @@ public class Mensajes {
     public final static String rolNoEliminado = "No hemos podido eliminar el rol, es posible que tenga relaciones.";
     public final static String rolMenusDone = "Se han actualizado los menus del rol";
 
+    public final static String categoriaCreada = "La categoria se ha creado exitosamente";
+    public final static String categoriaNoCreada = "Hubo un problema al crear la categoria, puede que exista una con el mismo nombre";
+    public final static String categoriaEditada = "La categoria se ha editado correctamente";
+    public final static String categoriaNoEditada = "Hubo un problema al editar la categoria. Es posible que exista otra con el mismo nombre";
+    public final static String categoriaEliminada = "Se ha eliminado la categoria";
+    public final static String categoriaNoEliminada = "Hubo un problema al eliminar la categoria, es posible que este en uso.";
+
+    public final static String productoCreado = "Producto creado exitosamente";
+    public final static String productoNoCreado = "No se ha creado el producto, es posible que el codigo este repetido";
+    public final static String productoEditado = "Producto editado correctamente";
+    public final static String productoNoEditado = "No se pudo editar el producto, es posible que el codigo este repetido";
+    public final static String productoEliminado = "El producto ha sido eliminado";
+    public final static String productoNoEliminado = "El producto no pudo ser eliminado, es posible que tenga relaciones";
+    public final static String productoCategorias = "Se han modificado las categorias del producto";
+    public final static String productoExistencia = "Existencias actualizadas";
+
 }

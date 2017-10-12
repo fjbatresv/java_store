@@ -138,9 +138,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @Consumes({MediaType.APPLICATION_JSON})
     public ResponseHeader setRoles(@PathParam("id") Integer id, List<Rol> roles) {
         ResponseHeader respuesta = new ResponseHeader();
-        Usuario usuario = em.createNamedQuery("Usuario.findById", Usuario.class)
-                .setParameter("id", id)
-                .getSingleResult();
+        Usuario usuario = super.find(id);
         List<UsuarioRol> relaciones = em.createNamedQuery("UsuarioRol.findByUsuario", UsuarioRol.class)
                 .setParameter("usuarioId", usuario)
                 .getResultList();

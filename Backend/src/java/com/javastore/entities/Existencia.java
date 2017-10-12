@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -31,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Existencia.findAll", query = "SELECT e FROM Existencia e")
     , @NamedQuery(name = "Existencia.findById", query = "SELECT e FROM Existencia e WHERE e.id = :id")
-    , @NamedQuery(name = "Existencia.findByProductoId", query = "SELECT e FROM Existencia e WHERE e.productoId = :productoId")
+    , @NamedQuery(name = "Existencia.findByProductoId", query = "SELECT e FROM Existencia e WHERE e.productoId.id = :id")
     , @NamedQuery(name = "Existencia.findByCantidad", query = "SELECT e FROM Existencia e WHERE e.cantidad = :cantidad")
     , @NamedQuery(name = "Existencia.findByCosto", query = "SELECT e FROM Existencia e WHERE e.costo = :costo")
     , @NamedQuery(name = "Existencia.findByFechaHora", query = "SELECT e FROM Existencia e WHERE e.fechaHora = :fechaHora")})
@@ -43,10 +45,9 @@ public class Existencia implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "producto_id")
-    private int productoId;
+    @JoinColumn(name = "producto_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Producto productoId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad")
@@ -68,7 +69,7 @@ public class Existencia implements Serializable {
         this.id = id;
     }
 
-    public Existencia(Integer id, int productoId, double cantidad, double costo, Date fechaHora) {
+    public Existencia(Integer id, Producto productoId, double cantidad, double costo, Date fechaHora) {
         this.id = id;
         this.productoId = productoId;
         this.cantidad = cantidad;
@@ -84,11 +85,11 @@ public class Existencia implements Serializable {
         this.id = id;
     }
 
-    public int getProductoId() {
+    public Producto getProductoId() {
         return productoId;
     }
 
-    public void setProductoId(int productoId) {
+    public void setProductoId(Producto productoId) {
         this.productoId = productoId;
     }
 

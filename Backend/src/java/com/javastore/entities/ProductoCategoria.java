@@ -28,7 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProductoCategoria.findAll", query = "SELECT p FROM ProductoCategoria p")
-    , @NamedQuery(name = "ProductoCategoria.findById", query = "SELECT p FROM ProductoCategoria p WHERE p.id = :id")})
+    , @NamedQuery(name = "ProductoCategoria.findById", query = "SELECT p FROM ProductoCategoria p WHERE p.id = :id")
+    , @NamedQuery(name = "ProductoCategoria.findCategoriaByProductoId", query = "SELECT p.categoriaId FROM ProductoCategoria p WHERE p.productoId.id = :id")
+, @NamedQuery(name = "ProductoCategoria.findByProductoId", query = "SELECT p FROM ProductoCategoria p WHERE p.productoId.id = :id")})
 public class ProductoCategoria implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -99,5 +101,5 @@ public class ProductoCategoria implements Serializable {
     public String toString() {
         return "com.javastore.entities.ProductoCategoria[ id=" + id + " ]";
     }
-    
+
 }

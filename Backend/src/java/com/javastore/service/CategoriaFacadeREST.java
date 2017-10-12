@@ -5,8 +5,11 @@
  */
 package com.javastore.service;
 
+import com.javastore.dtos.ResponseHeader;
 import com.javastore.entities.Categoria;
+import com.javastore.utils.Mensajes;
 import java.util.List;
+import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,7 +28,7 @@ import javax.ws.rs.core.MediaType;
  * @author fjbatresv
  */
 @Stateless
-@Path("com.javastore.entities.categoria")
+@Path("categoria")
 public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
 
     @PersistenceContext(unitName = "BackendPU")
@@ -36,23 +39,69 @@ public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
     }
 
     @POST
-    @Override
+    @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Categoria entity) {
-        super.create(entity);
+    public ResponseHeader add(Categoria entity) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        List<Categoria> valid = em.createNamedQuery("Categoria.findByNombre", Categoria.class)
+                .setParameter("nombre", entity.getNombre())
+                .getResultList();
+        if (valid.isEmpty()) {
+            super.create(entity);
+            respuesta.setMensaje(Mensajes.categoriaCreada);
+        } else {
+            respuesta.setCodigo(1);
+            respuesta.setResultado(false);
+            respuesta.setMensaje(Mensajes.categoriaNoCreada);
+            this.logger.log(Level.WARNING, "Intento crear categoria repetida");
+        }
+        respuesta.setResponse(entity);
+        return respuesta;
     }
 
     @PUT
     @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Categoria entity) {
-        super.edit(entity);
+    public ResponseHeader edit(@PathParam("id") Integer id, Categoria entity) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        List<Categoria> valid = em.createNamedQuery("Categoria.findByNombre", Categoria.class)
+                .setParameter("nombre", entity.getNombre())
+                .getResultList();
+        if ((valid.size() > 0 && valid.get(0).getId() == entity.getId()) || valid.isEmpty()) {
+            super.edit(entity);
+            respuesta.setMensaje(Mensajes.categoriaEditada);
+        } else {
+            respuesta.setCodigo(1);
+            respuesta.setResultado(false);
+            respuesta.setMensaje(Mensajes.categoriaNoEditada);
+            this.logger.log(Level.WARNING, "Intento editar categoria repetida");
+        }
+        respuesta.setResponse(entity);
+        return respuesta;
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    public ResponseHeader remove(@PathParam("id") Integer id) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.categoriaEliminada);
+        try {
+            super.remove(super.find(id));
+            this.logger.log(Level.INFO, "Categoria eliminada", id);
+        } catch (Exception ex) {
+            respuesta.setCodigo(1);
+            respuesta.setResultado(false);
+            respuesta.setMensaje(Mensajes.categoriaNoEliminada);
+            this.logger.log(Level.SEVERE, "No se pudo eliminar la categoria", ex);
+        }
+        return respuesta;
     }
 
     @GET
@@ -87,5 +136,5 @@ public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

@@ -63,6 +63,34 @@ angular.module('doorman.services', [])
                 setMenus: {method: 'PUT', isArray: false, url: 'rest/rol/menus/:id', params: {id: '@id'}}
             });
         })
+        .factory("CategoriaFactory", function ($resource) {
+            return $resource('rest/categoria/:id', {id: '@id'}, {
+                find: {mehtod: 'GET', isArray: false},
+                findAll: {method: 'GET', isArray: true},
+                add: {method: 'POST', isArray: false},
+                edit: {method: 'PUT', isArray: false},
+                delete: {method: 'DELETE', isArray: false},
+            });
+        })
+        .factory("ProductoFactory", function ($resource) {
+            return $resource('rest/producto/:id', {id: '@id'}, {
+                find: {mehtod: 'GET', isArray: false},
+                findAll: {method: 'GET', isArray: true},
+                add: {method: 'POST', isArray: false},
+                edit: {method: 'PUT', isArray: false},
+                delete: {method: 'DELETE', isArray: false},
+                categorias: {method: 'GET', isArray: true, url: 'rest/producto/categorias/:id', params: {id: '@id'}},
+                setCategorias: {method: 'PUT', isArray: false, url: 'rest/producto/categorias/:id', params: {id: '@id'}},
+                existencia: {method: 'POST', isArray: false, url: 'rest/producto/existencia/:id', params: {id: '@id'}}
+            });
+        })
+        .factory("ExistenciaFactory", function ($resource) {
+            return $resource('rest/existencia/:id', {id: '@id'}, {
+                find: {mehtod: 'GET', isArray: false},
+                findAll: {method: 'GET', isArray: true},
+                producto: {method: 'GET', isArray: true, url: 'rest/existencia/producto/:id', params: {id: '@id'}}
+            });
+        })
         .factory("MenuFactory", function ($resource) {
             return $resource('rest/menu/:id', {id: '@id'}, {
                 findAll: {method: 'GET', isArray: true},

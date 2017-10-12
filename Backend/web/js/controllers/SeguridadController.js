@@ -13,4 +13,18 @@ angular.module('doorman.controllers')
                     path: '/seguridad/roles'
                 }
             ];
+        })
+        .controller('CatalogosController', function ($rootScope, $scope, $location, $cookies, SessionFactory) {
+            $scope.opciones = [
+                {
+                    nombre: 'Categorias',
+                    icono: 'device_hub',
+                    path: '/catalogos/categorias'
+                },
+                {
+                    nombre: 'Productos',
+                    icono: 'card_giftcard',
+                    path: '/catalogos/productos'
+                },
+            ];
         });
