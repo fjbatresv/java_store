@@ -22,6 +22,7 @@ import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -67,8 +68,9 @@ public class SessionFacadeREST {
     }
 
     @GET
+    @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Usuario active(@CookieParam("user") Integer id) {
+    public Usuario active(@PathParam("id") Integer id) {
         this.logger.log(Level.INFO, "Usuario activo");
         return em.createNamedQuery("Usuario.findById", Usuario.class)
                 .setParameter("id", id)
@@ -76,9 +78,9 @@ public class SessionFacadeREST {
     }
 
     @GET
-    @Path("menus")
+    @Path("menus/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<UsuarioMenu> menus(@CookieParam("user") Integer id) {
+    public List<UsuarioMenu> menus(@PathParam("id") Integer id) {
         this.logger.log(Level.INFO, "Buscar menus del usuario");
         return em.createNamedQuery("UsuarioMenu.findByUid", UsuarioMenu.class)
                 .setParameter("uid", id)

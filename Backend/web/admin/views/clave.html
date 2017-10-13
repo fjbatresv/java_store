@@ -1,0 +1,27 @@
+		<form class="form-horizontal" ng-submit="guardar()" name="form">
+        <md-card>
+        	<md-card-title>
+	          <md-card-title-text>
+	            <span class="md-headline"><i class="material-icons">vpn_key</i> Cambiar clave</span>
+	          </md-card-title-text>
+	        </md-card-title>
+	        <md-card-content>
+            <md-input-container class="md-block">
+                    <label>Clave actual</label>
+                    <input ng-model="claveA" required>
+                </md-input-container>
+	        	<md-input-container class="md-block">
+                    <label>Nueva clave</label>
+                    <input ng-model="password" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Repetir nueva clave</label>
+                    <input ng-model="password2" required>
+                </md-input-container>
+	        </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button ng-click="cancel()" type="button" class="md-raised float-right"><md-icon class="material-icons">arrow_back</md-icon> Cancelar</md-button>
+                <md-button type="submit" ng-disabled="!form.$valid || clave1 != clave2" class="md-raised md-primary float-right"><md-icon class="fa material-icons" >save</md-icon> Guardar</md-button>
+            </md-card-actions>
+        </md-card>
+        </form>

@@ -1,0 +1,16 @@
+<div class="col-md-12 row">
+    <div ng-repeat="evento in eventos" class="col-md-4">
+        <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+            <md-card-title>
+               <md-card-title-text>
+                   <span class="md-headline row" style="text-overflow: ellipsis;width: 100%;overflow: hidden;"><i class="material-icons">event</i> {{evento.nombre}}</span>
+               </md-card-title-text>
+               </md-card-title>
+            <md-card-content>
+           </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button ng-href="#/dashboard/{{evento.cui}}" type="button" class="md-raised"><md-icon class="material-icons">assessment</md-icon></md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</div>

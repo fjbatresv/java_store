@@ -1,0 +1,36 @@
+<md-content class="md-padding" layout-xs="column" layout="row">
+    <div class="col-md-6 col-md-offset-6 col-xs-10 col-xs-offset-1 ">
+        <form class="form-horizontal" ng-submit="ingresar()" name="form">
+            <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Inicio de sesión</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>              
+                    <div class="form-group">
+                        <div ng-show="error" style="color: red;" class="help-block has-error alert-danger">
+                            &nbsp;&nbsp;<i class="material-icons">warning</i> {{ error}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <md-input-container class="md-block">
+                            <md-icon md-font-icon="material-icons" style="display:inline-block;">person</md-icon>
+                            <input placeholder="Correo electronico" ng-model="login.email" type="email"required>
+                        </md-input-container>
+                    </div>
+                    <div class="form-group">
+                        <md-input-container class="md-block">
+                            <md-icon md-font-icon="material-icons" style="display:inline-block;">security</md-icon>
+                            <input placeholder="Clave de acceso" ng-model="login.password" type="password"required>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <!--<md-button ng-click="olvidar()" type="button" class="md-raised   float-right"><i class="material-icons" >security</i> Olvide mi clave</md-button>-->
+                    <md-button type="submit" class="md-raised md-primary float-right"><i class="fa fa-sign-in" ></i> Ingresar</md-button>
+                </md-card-actions>
+            </md-card>
+        </form>
+    </div>
+</md-content>

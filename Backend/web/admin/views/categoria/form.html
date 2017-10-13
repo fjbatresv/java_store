@@ -1,0 +1,36 @@
+<form class="form-horizontal" ng-submit="guardar()" name="form">
+    <div style="background-color: transparent; color: black;">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span class="md-headline"><md-icon class="material-icons">edit_mode</md-icon> {{titulo}}</span>
+            </h2>
+            <span flex></span>
+        </div>
+    </div>
+    <md-card>
+        <md-card-content>
+            <div class="col-md-12">
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <md-input-container class="md-block flex-gt-sm"  >
+                        <label>Nombre</label>
+                        <input ng-model="rol.nombre" required>
+                    </md-input-container>
+                    <div flex="5" hide-xs="" hide-sm="" class="hide-sm hide-xs flex-5">
+                        <!-- Spacer //-->
+                    </div>
+                </div>
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <style type="text/css">
+                        .md-errors-spacer{
+                            display: none;
+                        }
+                    </style>
+                </div>
+            </div>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ng-click="cancel()" type="button" class="md-raised float-right"><md-icon class="material-icons">arrow_back</md-icon> Cancelar</md-button>
+            <md-button ng-disabled="!form.$valid" type="submit" class="md-raised md-primary float-right"><md-icon class="fa material-icons" >save</md-icon> Guardar</md-button>
+        </md-card-actions>
+    </md-card>
+</form>

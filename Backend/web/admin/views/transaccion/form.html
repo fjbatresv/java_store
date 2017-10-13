@@ -1,0 +1,64 @@
+<form class="form-horizontal" ng-submit="guardar()" name="form">
+    <div style="background-color: transparent; color: black;">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span class="md-headline"><md-icon class="material-icons">shopping_basket</md-icon> {{titulo}}</span>
+            </h2>
+            <span flex></span>
+        </div>
+    </div>
+    <md-card>
+        <md-card-content>
+            <div class="col-md-12">
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <md-input-container class="md-block flex-gt-sm"  >
+                        <label>Nombre del cliente</label>
+                        <input ng-model="transaccion.clienteId.nombre" required readonly>
+                    </md-input-container>
+                    <div flex="5" hide-xs="" hide-sm="" class="hide-sm hide-xs flex-5">
+                        <!-- Spacer //-->
+                    </div>
+                    <md-input-container class="md-block flex-gt-sm"  >
+                        <label>Email del cliente</label>
+                        <input ng-model="transaccion.clienteId.email" required readonly>
+                    </md-input-container>
+                </div>
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <md-input-container class="md-block flex-gt-sm"  >
+                        <label>Telefono del cliente</label>
+                        <input ng-model="transaccion.clienteId.telefono" required readonly>
+                    </md-input-container>
+                    <div flex="5" hide-xs="" hide-sm="" class="hide-sm hide-xs flex-5">
+                        <!-- Spacer //-->
+                    </div>
+                    <md-input-container class="md-block flex-gt-sm"  >
+                        <label>Destino de la transaccion</label>
+                        <input ng-model="transaccion.destino" required readonly>
+                    </md-input-container>
+                </div>
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <style type="text/css">
+                        .md-errors-spacer{
+                            display: none;
+                        }
+                    </style>
+                </div>
+            </div>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ng-click="cancel()" type="button" class="md-raised float-right"><md-icon class="material-icons">arrow_back</md-icon> Cancelar</md-button>
+        </md-card-actions>
+    </md-card>
+    <md-card>
+        <md-card-content class="table-responsive">
+            <table class="table table-bordered table-hover"   tr-ng-grid=""  page-items="15" items="detalles" selection-mode="none">
+                <thead>
+                    <tr >
+                        <th field-name="productoId.codigo" display-name="Producto"></th>
+                        <th field-name="precio" display-name="Precio"></th>
+                    </tr>
+                </thead>
+            </table>
+        </md-card-content>
+    </md-card>
+</form>

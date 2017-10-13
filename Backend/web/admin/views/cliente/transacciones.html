@@ -1,0 +1,32 @@
+
+<div style="background-color: transparent; color: black;">
+    <div class="md-toolbar-tools">
+        <h2>
+            <span><md-icon class="material-icons">shopping_basket</md-icon> {{ titulo }}</span>
+        </h2>
+        <span flex></span>
+    </div>
+</div>
+<md-card>
+    <md-card-content class="table-responsive">
+        <table class="table table-bordered table-hover"   tr-ng-grid=""  page-items="15" items="transacciones" selection-mode="none">
+            <thead>
+                <tr >
+                    <th field-name="id" display-name="ID"></th>
+                    <th field-name="destino" display-name="Destino"></th>
+                    <th field-name="estadoId.nombre" display-name="Estado"></th>
+                    <th display-name="Acciones"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-class="{danger: gridItem.estadoId.id !== 5}">
+                    <td>
+            <md-button ng-href="#/procesos/transacciones/detalle/{{gridItem.id}}" class="md-fab md-mini md-mini-2" aria-label="Editar">
+                <md-icon class="material-icons">info_outline</md-icon>
+            </md-button>
+            </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-card-content>
+</md-card>
