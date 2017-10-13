@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author fjbatresv
  */
 @Stateless
-@Path("com.javastore.entities.detalletransaccion")
+@Path("detalle-transaccion")
 public class DetalleTransaccionFacadeREST extends AbstractFacade<DetalleTransaccion> {
 
     @PersistenceContext(unitName = "BackendPU")
@@ -33,6 +33,15 @@ public class DetalleTransaccionFacadeREST extends AbstractFacade<DetalleTransacc
 
     public DetalleTransaccionFacadeREST() {
         super(DetalleTransaccion.class);
+    }
+    
+    @GET
+    @Path("transaccion/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<DetalleTransaccion> byTransaccion(@PathParam("id") Integer id){
+        return em.createNamedQuery("DetalleTransaccion.findByTransaccionId", DetalleTransaccion.class)
+                .setParameter("id", id)
+                .getResultList();
     }
 
     @POST

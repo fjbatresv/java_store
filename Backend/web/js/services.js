@@ -91,6 +91,25 @@ angular.module('doorman.services', [])
                 producto: {method: 'GET', isArray: true, url: 'rest/existencia/producto/:id', params: {id: '@id'}}
             });
         })
+        .factory('ClienteFactory', function ($resource) {
+            return $resource('rest/cliente/:id', {id: '@id'}, {
+                find: {mehtod: 'GET', isArray: false},
+                findAll: {method: 'GET', isArray: true},
+                active: {method: 'PUT', isArray: false, url: 'rest/cliente/active/:id', params: {id: '@id'}}
+            });
+        })
+        .factory('TransaccionFactory', function ($resource) {
+            return $resource('rest/transaccion/:id', {id: '@id'}, {
+                find: {mehtod: 'GET', isArray: false},
+                findAll: {method: 'GET', isArray: true},
+                byCliente: {method: 'GET', isArray: true, url: 'rest/transaccion/cliente/:id', params: {id: '@id'}}
+            });
+        })
+        .factory("DetalleTransaccionFactory", function ($resource) {
+            return $resource('rest/detalle-transaccion/:id', {id: '@id'}, {
+                byTransaccion: {method: 'GET', isArray: true, url: 'rest/detalle-transaccion/transaccion/:id', params: {id: '@id'}}
+            });
+        })
         .factory("MenuFactory", function ($resource) {
             return $resource('rest/menu/:id', {id: '@id'}, {
                 findAll: {method: 'GET', isArray: true},

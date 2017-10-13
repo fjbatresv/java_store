@@ -5,7 +5,9 @@
  */
 package com.javastore.service;
 
+import com.javastore.dtos.ResponseHeader;
 import com.javastore.entities.Cliente;
+import com.javastore.utils.Mensajes;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,7 +27,7 @@ import javax.ws.rs.core.MediaType;
  * @author fjbatresv
  */
 @Stateless
-@Path("com.javastore.entities.cliente")
+@Path("cliente")
 public class ClienteFacadeREST extends AbstractFacade<Cliente> {
 
     @PersistenceContext(unitName = "BackendPU")
@@ -45,8 +47,29 @@ public class ClienteFacadeREST extends AbstractFacade<Cliente> {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Cliente entity) {
+    public ResponseHeader edit(@PathParam("id") Integer id, Cliente entity) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResponse(entity);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.clienteEditado);
         super.edit(entity);
+        return respuesta;
+    }
+    
+    @PUT
+    @Path("active/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseHeader active(@PathParam("id") Integer id) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        Cliente cliente = super.find(id);
+        respuesta.setMensaje(cliente.getActivo() ? Mensajes.clienteDesactivado : Mensajes.clienteActivado);
+        cliente.setActivo(!cliente.getActivo());
+        super.edit(cliente);
+        respuesta.setResponse(cliente);
+        return respuesta;
     }
 
     @DELETE
@@ -87,5 +110,5 @@ public class ClienteFacadeREST extends AbstractFacade<Cliente> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

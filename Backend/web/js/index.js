@@ -13,6 +13,27 @@ angular.module('doorman', ['ngMaterial', 'ngRoute', 'ngCookies', 'ngResource',
                         controller: 'CatalogosController as ctr',
                         templateUrl: 'views/seguridad/opciones.html',
                     })
+                    .when('/procesos', {
+                        controller: 'ProcesosController as ctr',
+                        templateUrl: 'views/seguridad/opciones.html',
+                    })
+                    .when('/procesos/transacciones', {
+                        controller: 'TransaccionListController as ctr',
+                        templateUrl: 'views/transaccion/list.html',
+                    })
+                    .when('/procesos/transacciones/detalle/:id', {
+                        controller: 'TransaccionDetalleController as ctr',
+                        templateUrl: 'views/transaccion/form.html',
+                    })
+                    .when('/procesos/clientes', {
+                        controller: 'ClienteListController as ctr',
+                        templateUrl: 'views/cliente/list.html',
+                    })
+                    .when('/procesos/clientes/transacciones/:id', {
+                        controller: 'ClienteTransaccionController as ctr',
+                        templateUrl: 'views/cliente/transacciones.html',
+                    })
+
                     .when('/catalogos/categorias', {
                         controller: 'CategoriaListController as ctr',
                         templateUrl: 'views/categoria/list.html',

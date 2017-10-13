@@ -7,6 +7,7 @@ package com.javastore.service;
 
 import com.javastore.entities.Transaccion;
 import java.util.List;
+import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,7 +26,7 @@ import javax.ws.rs.core.MediaType;
  * @author fjbatresv
  */
 @Stateless
-@Path("com.javastore.entities.transaccion")
+@Path("transaccion")
 public class TransaccionFacadeREST extends AbstractFacade<Transaccion> {
 
     @PersistenceContext(unitName = "BackendPU")
@@ -70,6 +71,16 @@ public class TransaccionFacadeREST extends AbstractFacade<Transaccion> {
     }
 
     @GET
+    @Path("cliente/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Transaccion> byCliente(@PathParam("id") Integer id) {
+        this.logger.log(Level.INFO, "Transacciones para el cliente " + String.valueOf(id));
+        return em.createNamedQuery("Transaccion.findByClienteId", Transaccion.class)
+                .setParameter("id", id)
+                .getResultList();
+    }
+
+    @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Transaccion> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
@@ -87,5 +98,5 @@ public class TransaccionFacadeREST extends AbstractFacade<Transaccion> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

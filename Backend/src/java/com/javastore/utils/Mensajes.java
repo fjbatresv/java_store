@@ -45,4 +45,8 @@ public class Mensajes {
     public final static String productoCategorias = "Se han modificado las categorias del producto";
     public final static String productoExistencia = "Existencias actualizadas";
 
+    public final static String clienteEditado = "Cliente modificado correctamente";
+    public final static String clienteDesactivado = "Se ha desactivado el cliente";
+    public final static String clienteActivado = "Se ha activado el cliente";
+
 }

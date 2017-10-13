@@ -27,4 +27,18 @@ angular.module('doorman.controllers')
                     path: '/catalogos/productos'
                 },
             ];
+        })
+        .controller('ProcesosController', function ($rootScope, $scope, $location, $cookies, SessionFactory) {
+            $scope.opciones = [
+                {
+                    nombre: 'Clientes',
+                    icono: 'recent_actors',
+                    path: '/procesos/clientes'
+                },
+                {
+                    nombre: 'Transacicones',
+                    icono: 'shopping_basket',
+                    path: '/procesos/transacciones'
+                },
+            ];
         });

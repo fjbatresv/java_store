@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t")
     , @NamedQuery(name = "Transaccion.findById", query = "SELECT t FROM Transaccion t WHERE t.id = :id")
-    , @NamedQuery(name = "Transaccion.findByDestino", query = "SELECT t FROM Transaccion t WHERE t.destino = :destino")})
+    , @NamedQuery(name = "Transaccion.findByDestino", query = "SELECT t FROM Transaccion t WHERE t.destino = :destino")
+    , @NamedQuery(name = "Transaccion.findByClienteId", query = "SELECT t FROM Transaccion t WHERE t.clienteId.id = :id")})
 public class Transaccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -82,7 +83,7 @@ public class Transaccion implements Serializable {
 
     public void setDestino(String destino) {
         this.destino = destino;
-    }    
+    }
 
     public Cliente getClienteId() {
         return clienteId;
@@ -124,5 +125,5 @@ public class Transaccion implements Serializable {
     public String toString() {
         return "com.javastore.entities.Transaccion[ id=" + id + " ]";
     }
-    
+
 }
