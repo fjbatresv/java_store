@@ -1,0 +1,99 @@
+md-content {
+  background-color: transparent;
+}
+
+md-card {
+  background-color: #fff;
+}
+md-card h2:first-of-type {
+  margin-top: 0;
+}
+
+md-toolbar .md-button.md-default-theme {
+  border-radius: 99%;
+}
+
+md-card md-card-actions {
+   background-color: #ededed ;
+   margin: 0;
+   padding: 0.5em;
+}
+
+h2 {
+  font-weight: 400;
+}
+
+.md-toolbar-tools-bottom {
+  font-size: small;
+}
+.md-toolbar-tools-bottom :last-child {
+  opacity: 0.8;
+}
+
+md-toolbar:not(.md-hue-1),
+.md-fab {
+  fill: #fff;
+}
+
+md-sidenav {
+  fill: #737373;
+}
+md-sidenav ng-md-icon {
+  position: relative;
+  top: 5px;
+}
+
+.user-avatar {
+  border-radius: 99%;
+}
+
+.md-button.md-fab.md-mini.md-mini-2 {
+    width: 30px;
+    height: 30px;
+    min-height: 30px;
+    line-height: 30px!important;
+    background-color: white;!important;
+}
+
+.md-button.md-fab.md-mini.md-mini-2 .material-icons{
+    font-size: 16px;
+    height: 17px!important;
+    width: 17px!important;
+    min-height: 17px;
+    min-width: 17px;    
+    color: #adadad;
+}
+
+
+
+.md-button.md-fab.md-mini.md-mini-2:not([disabled]):hover, .md-button.md-primary.md-fab:not([disabled]).md-focused{
+    background-color: #ededed;
+}
+
+.table>tbody>tr>td{
+    border: none;
+    border-top: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+tr.ng-scope{
+  outline: none;
+}
+md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar){
+  background-color: #337ab7;
+}
+
+md-card{
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 1px rgba(0,0,0,.1);
+  transition: all .15s ease-in-out;
+}
+
+md-card:hover{
+ box-shadow: 0 10px 20px 0 rgba(168,182,191,.6); 
+}
+
+.card-evento{
+  margin: 10px 0;  
+}

@@ -1,0 +1,16 @@
+<div class="col-md-12 row">
+    <div ng-repeat="producto in productos" class="col-md-4">
+        <md-card ng-click='detalle(producto)' md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+            <md-card-title>
+               <md-card-title-text>
+                   <span>&nbsp;{{producto.nombre}}</span>
+               </md-card-title-text>
+               </md-card-title>
+            <md-card-content style="background-image: url('{{ producto.foto }}'); background-repeat: no-repeat; background-size: cover; background-position: center; height: 150px;">
+           </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                {{ producto.precio | currency : 'GTQ ' : 2 }}&nbsp;&nbsp;<md-button ng-click="carrito(producto)" type="button" class="md-raised"><md-icon class="material-icons">add_shopping_cart</md-icon></md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</div>

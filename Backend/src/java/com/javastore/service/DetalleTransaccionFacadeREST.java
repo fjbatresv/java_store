@@ -6,6 +6,7 @@
 package com.javastore.service;
 
 import com.javastore.entities.DetalleTransaccion;
+import com.javastore.entities.Producto;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,11 +35,11 @@ public class DetalleTransaccionFacadeREST extends AbstractFacade<DetalleTransacc
     public DetalleTransaccionFacadeREST() {
         super(DetalleTransaccion.class);
     }
-    
+
     @GET
     @Path("transaccion/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<DetalleTransaccion> byTransaccion(@PathParam("id") Integer id){
+    public List<DetalleTransaccion> byTransaccion(@PathParam("id") Integer id) {
         return em.createNamedQuery("DetalleTransaccion.findByTransaccionId", DetalleTransaccion.class)
                 .setParameter("id", id)
                 .getResultList();
@@ -79,6 +80,15 @@ public class DetalleTransaccionFacadeREST extends AbstractFacade<DetalleTransacc
     }
 
     @GET
+    @Path("recent")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Producto> recent() {
+        return em.createNamedQuery("DetalleTransaccion.recent", Producto.class)
+                .setMaxResults(20)
+                .getResultList();
+    }
+
+    @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<DetalleTransaccion> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
@@ -96,5 +106,5 @@ public class DetalleTransaccionFacadeREST extends AbstractFacade<DetalleTransacc
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.javastore.service.CarritoFacadeREST.class);
         resources.add(com.javastore.service.CategoriaFacadeREST.class);
+        resources.add(com.javastore.service.ClientSessionFacadeREST.class);
         resources.add(com.javastore.service.ClienteFacadeREST.class);
         resources.add(com.javastore.service.DetalleTransaccionFacadeREST.class);
         resources.add(com.javastore.service.EstadoTransaccionFacadeREST.class);

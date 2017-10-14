@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Carrito.findAll", query = "SELECT c FROM Carrito c")
     , @NamedQuery(name = "Carrito.findById", query = "SELECT c FROM Carrito c WHERE c.id = :id")
-    , @NamedQuery(name = "Carrito.findByPrecio", query = "SELECT c FROM Carrito c WHERE c.precio = :precio")})
+    , @NamedQuery(name = "Carrito.findByPrecio", query = "SELECT c FROM Carrito c WHERE c.precio = :precio")
+    , @NamedQuery(name = "Carrito.findByClientId", query = "SELECT c FROM Carrito c WHERE c.clienteId.id = :id")})
 public class Carrito implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -118,5 +119,5 @@ public class Carrito implements Serializable {
     public String toString() {
         return "com.javastore.entities.Carrito[ id=" + id + " ]";
     }
-    
+
 }

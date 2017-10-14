@@ -109,6 +109,15 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     }
 
     @GET
+    @Path("by-categoria/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Producto> byCategoria(@PathParam("id") Integer id) {
+        return em.createNamedQuery("ProductoCategoria.findProductoByCategoriaId", Producto.class)
+                .setParameter("id", id)
+                .getResultList();
+    }
+
+    @GET
     @Produces({MediaType.APPLICATION_JSON})
     @Path("categorias/{id}")
     public List<Categoria> getCategorias(@PathParam("id") Integer id) {

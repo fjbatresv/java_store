@@ -1,0 +1,81 @@
+<form class="form-horizontal" ng-submit="guardar()" name="form">
+    <div style="background-color: transparent; color: black;">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span class="md-headline"><md-icon class="material-icons">edit_mode</md-icon> {{titulo}}</span>
+            </h2>
+            <span flex></span>
+        </div>
+    </div>
+    <md-card>
+        <md-card-content>
+            <div class="col-md-12">
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <md-input-container class="md-block flex-gt-sm"  >
+                        <label>Nombre</label>
+                        <input ng-model="cliente.nombre" required>
+                    </md-input-container>
+                    <div flex="5" hide-xs="" hide-sm="" class="hide-sm hide-xs flex-5">
+                        <!-- Spacer //-->
+                    </div>
+                    <md-input-container class="md-block flex-gt-sm" >
+                        <label>ID</label>
+                        <input ng-model="cliente.id" required>
+                    </md-input-container>
+                </div>
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <md-input-container class="md-block flex-gt-sm"  >
+                        <label>Correo electronico</label>
+                        <input ng-model="cliente.email" type="email" required>
+                    </md-input-container>
+                    <div flex="5" hide-xs="" hide-sm="" class="hide-sm hide-xs flex-5">
+                        <!-- Spacer //-->
+                    </div>
+                    <md-input-container class="md-block flex-gt-sm" >
+                        <label>Télefono</label>
+                        <input ng-model="cliente.tel" required>
+                    </md-input-container>
+                </div>
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <md-input-container class="md-block flex-gt-sm"  >
+                        <label>Edad</label>
+                        <input ng-model="cliente.edad" type="number" required>
+                    </md-input-container>
+                    <div flex="5" hide-xs="" hide-sm="" class="hide-sm hide-xs flex-5">
+                        <!-- Spacer //-->
+                    </div>
+                    <md-input-container class="md-block flex-gt-sm" >
+                        <label>Fecha de nacimiento</label>
+                        <md-datepicker ng-model="fecha" required></md-datepicker>
+                    </md-input-container>
+                </div>
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <md-input-container class="md-block flex-gt-sm md-input-has-value ng-animate md-input-invalid flex-30"  >
+                        <label>Avatar</label>
+                        <input ng-model="cliente.avatar" required placeholder="URL de imagen"> o
+                        <input ng-model="logo"
+                               onchange="angular.element(this).scope().logoChange(this)"
+                               type="file" accept="image/*" />
+                    </md-input-container>
+                    <div class="flex-20">
+                        <md-progress-circular ng-if="logoLoading" md-mode="indeterminate"></md-progress-circular>
+                    </div>
+                </div>
+                <div ng-if="cliente.avatar" layout-gt-sm="row" class="layout-gt-sm-row">
+                    <img src="{{cliente.avatar}}" height="200px" />
+                </div>
+                <div  layout-gt-sm="row" class="layout-gt-sm-row">
+                    <style type="text/css">
+                        .md-errors-spacer{
+                            display: none;
+                        }
+                    </style>
+                </div>
+            </div>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ng-click="cancel()" type="button" class="md-raised float-right"><md-icon class="material-icons">arrow_back</md-icon> Cancelar</md-button>
+            <md-button ng-disabled="!form.$valid" type="submit" class="md-raised md-primary float-right"><md-icon class="fa material-icons" >save</md-icon> Guardar</md-button>
+        </md-card-actions>
+    </md-card>
+</form>

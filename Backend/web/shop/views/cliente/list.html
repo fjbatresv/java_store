@@ -1,0 +1,36 @@
+
+<div style="background-color: transparent; color: black;">
+    <div class="md-toolbar-tools">
+        <h2>
+            <span><md-icon class="material-icons">recent_actors</md-icon> Clientes</span>
+        </h2>
+        <span flex></span>
+    </div>
+</div>
+<md-card>
+    <md-card-content class="table-responsive">
+        <table class="table table-bordered table-hover"   tr-ng-grid=""  page-items="15" items="clientes" selection-mode="none">
+            <thead>
+                <tr >
+                    <th field-name="email" display-name="Email"></th>
+                    <th field-name="nombre" display-name="Nombre"></th>
+                    <th field-name="telefono" display-name="Telefono"></th>
+                    <th display-name="Acciones"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-class="{danger: !gridItem.activo}">
+                    <td>
+            <md-button ng-href="#/procesos/transacciones/detalle/{{gridItem.id}}" class="md-fab md-mini md-mini-2" aria-label="Editar">
+                <md-icon class="material-icons">shopping_basket</md-icon>
+            </md-button>
+            <md-button ng-click='activar(gridItem)' class="md-fab md-mini md-mini-2" aria-label="Eliminar">
+                <md-icon ng-if="gridItem.activo" class="material-icons">assignment_returned</md-icon>
+                <md-icon ng-if="!gridItem.activo" class="material-icons">assignment_turned_in</md-icon>
+            </md-button>
+            </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-card-content>
+</md-card>

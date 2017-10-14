@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Cliente.findByNombre", query = "SELECT c FROM Cliente c WHERE c.nombre = :nombre")
     , @NamedQuery(name = "Cliente.findByEmail", query = "SELECT c FROM Cliente c WHERE c.email = :email")
     , @NamedQuery(name = "Cliente.findByTelefono", query = "SELECT c FROM Cliente c WHERE c.telefono = :telefono")
-    , @NamedQuery(name = "Cliente.findByActivo", query = "SELECT c FROM Cliente c WHERE c.activo = :activo")})
+    , @NamedQuery(name = "Cliente.findByActivo", query = "SELECT c FROM Cliente c WHERE c.activo = :activo")
+    , @NamedQuery(name = "Cliente.login", query = "SELECT c FROM Cliente c WHERE c.activo = true and c.email = :email and c.password = :password")})
 public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -158,5 +159,5 @@ public class Cliente implements Serializable {
     public String toString() {
         return "com.javastore.entities.Cliente[ id=" + id + " ]";
     }
-    
+
 }
