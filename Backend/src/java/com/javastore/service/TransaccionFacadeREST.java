@@ -5,7 +5,12 @@
  */
 package com.javastore.service;
 
+import com.javastore.dtos.ResponseHeader;
+import com.javastore.entities.EstadoTransaccion;
+import com.javastore.entities.FlujoTransaccion;
 import com.javastore.entities.Transaccion;
+import com.javastore.utils.Mensajes;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
@@ -78,6 +83,81 @@ public class TransaccionFacadeREST extends AbstractFacade<Transaccion> {
         return em.createNamedQuery("Transaccion.findByClienteId", Transaccion.class)
                 .setParameter("id", id)
                 .getResultList();
+    }
+    
+    @PUT
+    @Path("cobro/{id}/{uid}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseHeader cobrar(@PathParam("id") Integer id, @PathParam("uid") Integer uid){
+        ResponseHeader respuesta = new ResponseHeader();
+        Transaccion transaccion = super.find(id);
+        EstadoTransaccion estado = em.createNamedQuery("EstadoTransaccion.findByNombre", EstadoTransaccion.class)
+                .setParameter("nombre", "Pagada")
+                .getSingleResult();
+        transaccion.setEstadoId(estado);
+        FlujoTransaccion flujo = new FlujoTransaccion();
+        flujo.setEstadoId(estado);
+        flujo.setTransaccionId(transaccion);
+        flujo.setComentario(new Date().toString() + " | Por el usuario: " + String.valueOf(uid));
+        em.merge(transaccion);
+        em.persist(flujo);
+        em.flush();
+        this.logger.log(Level.INFO, "Transaccion pagada");
+        respuesta.setCodigo(0);
+        respuesta.setResponse(transaccion);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.transaccionPagada.replace("%id%", String.valueOf(id)));
+        return respuesta;
+    }
+    
+    @PUT
+    @Path("enviar/{id}/{uid}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseHeader enviar(@PathParam("id") Integer id, @PathParam("uid") Integer uid){
+        ResponseHeader respuesta = new ResponseHeader();
+        Transaccion transaccion = super.find(id);
+        EstadoTransaccion estado = em.createNamedQuery("EstadoTransaccion.findByNombre", EstadoTransaccion.class)
+                .setParameter("nombre", "Enviada")
+                .getSingleResult();
+        transaccion.setEstadoId(estado);
+        FlujoTransaccion flujo = new FlujoTransaccion();
+        flujo.setEstadoId(estado);
+        flujo.setTransaccionId(transaccion);
+        flujo.setComentario(new Date().toString() + " | Por el usuario: " + String.valueOf(uid));
+        em.merge(transaccion);
+        em.persist(flujo);
+        em.flush();
+        this.logger.log(Level.INFO, "Transaccion enviada");
+        respuesta.setCodigo(0);
+        respuesta.setResponse(transaccion);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.transaccionEnviada.replace("%id%", String.valueOf(id)));
+        return respuesta;
+    }
+    
+    @PUT
+    @Path("entrega/{id}/{uid}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseHeader entrega(@PathParam("id") Integer id, @PathParam("uid") Integer uid){
+        ResponseHeader respuesta = new ResponseHeader();
+        Transaccion transaccion = super.find(id);
+        EstadoTransaccion estado = em.createNamedQuery("EstadoTransaccion.findByNombre", EstadoTransaccion.class)
+                .setParameter("nombre", "Entregada")
+                .getSingleResult();
+        transaccion.setEstadoId(estado);
+        FlujoTransaccion flujo = new FlujoTransaccion();
+        flujo.setEstadoId(estado);
+        flujo.setTransaccionId(transaccion);
+        flujo.setComentario(new Date().toString() + " | Por el usuario: " + String.valueOf(uid));
+        em.merge(transaccion);
+        em.persist(flujo);
+        em.flush();
+        this.logger.log(Level.INFO, "Transaccion entregada");
+        respuesta.setCodigo(0);
+        respuesta.setResponse(transaccion);
+        respuesta.setResultado(true);
+        respuesta.setMensaje(Mensajes.transaccionEntregada.replace("%id%", String.valueOf(id)));
+        return respuesta;
     }
 
     @GET

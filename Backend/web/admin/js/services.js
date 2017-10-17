@@ -102,7 +102,10 @@ angular.module('doorman.services', [])
             return $resource('/rest/transaccion/:id', {id: '@id'}, {
                 find: {mehtod: 'GET', isArray: false},
                 findAll: {method: 'GET', isArray: true},
-                byCliente: {method: 'GET', isArray: true, url: '/rest/transaccion/cliente/:id', params: {id: '@id'}}
+                byCliente: {method: 'GET', isArray: true, url: '/rest/transaccion/cliente/:id', params: {id: '@id'}},
+                cobrar: {method: 'PUT', isArray: false, url: '/rest/transaccion/cobro/:id/:uid', params: {id: '@id', uid: '@uid'}},
+                enviar: {method: 'PUT', isArray: false, url: '/rest/transaccion/enviar/:id/:uid', params: {id: '@id', uid: '@uid'}},
+                entrega: {method: 'PUT', isArray: false, url: '/rest/transaccion/entrega/:id/:uid', params: {id: '@id', uid: '@uid'}}
             });
         })
         .factory("DetalleTransaccionFactory", function ($resource) {

@@ -56,7 +56,8 @@ angular.module('doorman.services', [])
         })
         .factory('ClienteFactory', function ($resource) {
             return $resource('/rest/cliente/:id', {id: '@id'}, {
-                find: {mehtod: 'GET', isArray: false},
+                add: {method: 'POST', isArray: false},
+                find: {method: 'GET', isArray: false},
                 active: {method: 'PUT', isArray: false, url: '/rest/cliente/active/:id', params: {id: '@id'}}
             });
         })
@@ -84,6 +85,7 @@ angular.module('doorman.services', [])
                 add: {method: 'POST', isArray: false},
                 byUser: {method: 'GET', isArray: true},
                 delete: {method: 'DELETE', isArray: false},
-                deleteAll: {method: 'DELETE', isArray: false, url: '/rest/carrito/all/:id', params: {id: '@id'}}
+                deleteAll: {method: 'DELETE', isArray: false, url: '/rest/carrito/all/:id', params: {id: '@id'}},
+                checkout: {method: 'PUT', isArray: false}
             });
         });

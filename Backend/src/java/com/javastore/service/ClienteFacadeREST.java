@@ -7,8 +7,12 @@ package com.javastore.service;
 
 import com.javastore.dtos.ResponseHeader;
 import com.javastore.entities.Cliente;
+import com.javastore.entities.Usuario;
+import com.javastore.utils.Crypto;
 import com.javastore.utils.Mensajes;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,10 +42,33 @@ public class ClienteFacadeREST extends AbstractFacade<Cliente> {
     }
 
     @POST
-    @Override
+    @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Cliente entity) {
-        super.create(entity);
+    public ResponseHeader add(Cliente entity) {
+        ResponseHeader respuesta = new ResponseHeader();
+        try {
+            entity.setPassword(Crypto.sha1(entity.getPassword()));
+            entity.setActivo(true);
+            List<Cliente> tmp = em.createNamedQuery("Cliente.findByEmail", Cliente.class)
+                    .setParameter("email", entity.getEmail())
+                    .getResultList();
+            if (!tmp.isEmpty()) {
+                respuesta.setCodigo(1);
+                respuesta.setMensaje(Mensajes.clienteRepetido);
+                respuesta.setResponse(null);
+                respuesta.setResultado(false);
+                this.logger.log(Level.INFO, "Cliente repetido");
+            } else {
+                super.create(entity);
+                respuesta.setCodigo(0);
+                respuesta.setMensaje(Mensajes.clienteCreado);
+                respuesta.setResponse(entity);
+                respuesta.setResultado(true);
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            this.logger.log(Level.SEVERE, "Password no encriptado");
+        }
+        return respuesta;
     }
 
     @PUT

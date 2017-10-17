@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-class="{danger: !gridItem.estadoId.id !== 5}">
+                <tr ng-class="{danger: gridItem.estadoId.nombre !== 'Entregada' }">
                     <td>
             <md-button ng-href="#/procesos/transacciones/detalle/{{gridItem.id}}" class="md-fab md-mini md-mini-2" aria-label="Editar">
                 <md-icon class="material-icons">info_outline</md-icon>

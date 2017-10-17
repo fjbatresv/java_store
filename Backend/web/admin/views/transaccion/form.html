@@ -46,6 +46,13 @@
             </div>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
+            <md-button ng-click="cobrar()" ng-if="transaccion.estadoId.nombre === 'Nueva'" type="button" class="md-raised md-primary float-right"><md-icon class="material-icons">attach_money</md-icon> Cobrar</md-button>
+            <md-button ng-click="enviar()" ng-if="transaccion.estadoId.nombre === 'Pagada'" type="button" class="md-raised md-primary float-right">
+                <md-icon class="material-icons">send</md-icon> Enviar</md-button>
+            <md-button ng-click="entregado()" ng-if="transaccion.estadoId.nombre === 'Enviada'" type="button" class="md-raised md-primary float-right">
+                <md-icon class="material-icons">done_all</md-icon> Entregada</md-button>
+            <md-button ng-click="factura()" ng-if="transaccion.estadoId.nombre === 'Entregada'" type="button" class="md-raised md-primary float-right">
+                <md-icon class="material-icons">receipt</md-icon> Factura</md-button>
             <md-button ng-click="cancel()" type="button" class="md-raised float-right"><md-icon class="material-icons">arrow_back</md-icon> Cancelar</md-button>
         </md-card-actions>
     </md-card>
@@ -62,3 +69,62 @@
         </md-card-content>
     </md-card>
 </form>
+<div style="display: none;">
+    <div id="factura">
+        <h2>Transaccion #{{ transaccion.id}}</h2>
+        <table>
+            <tr>
+                <td>
+                    Nombre del cliente
+                </td>
+                <td>
+                    {{ transaccion.clienteId.nombre}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Email del cliente
+                </td>
+                <td>
+                    {{ transaccion.clienteId.email}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Telefono del cliente
+                </td>
+                <td>
+                    {{ transaccion.clienteId.telefono}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Direccion de destino
+                </td>
+                <td>
+                    {{ transaccion.detino}}
+                </td>
+            </tr>
+        </table>
+        <hr/>
+        <table>
+            <tr>
+                <th>
+                    Producto
+                </th>
+                <th>
+                    Precio
+                </th>
+            </tr>
+            <tr ng-repeat="detalle in detalles">
+                <td>
+                    {{detalle.productoId.codigo}} | {{ detalle.productoId.nombre}}
+                </td>
+                <td>
+                    {{detalle.precio | currency: "GTQ " : 2 }}
+                </td>
+            </tr>
+        </table>
+        <h3>Total: {{ total | currency: "GTQ " : 2 }}</h3>
+    </div>
+</div>

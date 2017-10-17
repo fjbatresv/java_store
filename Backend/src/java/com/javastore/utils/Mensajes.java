@@ -48,6 +48,8 @@ public class Mensajes {
     public final static String clienteEditado = "Cliente modificado correctamente";
     public final static String clienteDesactivado = "Se ha desactivado el cliente";
     public final static String clienteActivado = "Se ha activado el cliente";
+    public final static String clienteCreado = "Bienvenido, te has registrado ahora inicia sesión";
+    public final static String clienteRepetido = "Parece que ya tienes una cuenta con ese correo";
 
     public final static String bienvenidoCliente = "Bienvenido";
     public final static String clienteInvalido = "No hemos encontrado tu cuenta";
@@ -55,5 +57,10 @@ public class Mensajes {
     public final static String carritoAgregado = "Producto agregado al carrito";
     public final static String carritoEliminado = "El producto se ha eliminado del carrito";
     public final static String carritoAllEliminado = "Se ha eliminado todo el carrito";
+    public final static String carritoCheckout = "Se ha creado la orden #%id%";
+    
+    public final static String transaccionPagada = "La transaccion #%id% fue pagada";
+    public final static String transaccionEnviada = "La transaccion #%id% fue enviada";
+    public final static String transaccionEntregada = "La transaccion #%id% fue entregada";
 
 }

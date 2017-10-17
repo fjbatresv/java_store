@@ -6,9 +6,15 @@
 package com.javastore.service;
 
 import com.javastore.dtos.ResponseHeader;
+import com.javastore.dtos.TextoDTO;
 import com.javastore.entities.Carrito;
 import com.javastore.entities.Cliente;
+import com.javastore.entities.DetalleTransaccion;
+import com.javastore.entities.EstadoTransaccion;
+import com.javastore.entities.FlujoTransaccion;
+import com.javastore.entities.Transaccion;
 import com.javastore.utils.Mensajes;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
@@ -60,8 +66,42 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Carrito entity) {
-        super.edit(entity);
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseHeader checkout(@PathParam("id") Integer id, TextoDTO dto) {
+        ResponseHeader respuesta = new ResponseHeader();
+        respuesta.setCodigo(0);
+        respuesta.setResultado(true);
+        Cliente cliente = em.createNamedQuery("Cliente.findById", Cliente.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        EstadoTransaccion estadoId = em.createNamedQuery("EstadoTransaccion.findByNombre", EstadoTransaccion.class)
+                .setParameter("nombre", "Nueva")
+                .getSingleResult();
+        Transaccion transaccion = new Transaccion();
+        transaccion.setDestino(dto.getTexto());
+        transaccion.setClienteId(cliente);
+        transaccion.setEstadoId(estadoId);
+        em.persist(transaccion);
+        em.flush();
+        FlujoTransaccion flujo = new FlujoTransaccion();
+        flujo.setTransaccionId(transaccion);
+        flujo.setEstadoId(estadoId);
+        flujo.setComentario(new Date().toString());
+        em.persist(flujo);
+        respuesta.setResponse(transaccion.getId());
+        respuesta.setMensaje(Mensajes.carritoCheckout.replace("%id%", String.valueOf(transaccion.getId())));
+        List<Carrito> carro = em.createNamedQuery("Carrito.findByClientId", Carrito.class)
+                .setParameter("id", id)
+                .getResultList();
+        for (Carrito obj : carro) {
+            DetalleTransaccion detalle = new DetalleTransaccion();
+            detalle.setProductoId(obj.getProductoId());
+            detalle.setPrecio(obj.getPrecio());
+            detalle.setTransaccionId(transaccion);
+            em.persist(detalle);
+            em.remove(obj);
+        }
+        return respuesta;
     }
 
     @DELETE
@@ -76,7 +116,7 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
         this.logger.log(Level.INFO, "Se elimino del carrito", id);
         return respuesta;
     }
-    
+
     @DELETE
     @Path("all/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -88,7 +128,7 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
         List<Carrito> lista = em.createNamedQuery("Carrito.findByClientId", Carrito.class)
                 .setParameter("id", id)
                 .getResultList();
-        for(Carrito linea : lista){
+        for (Carrito linea : lista) {
             super.remove(linea);
         }
         this.logger.log(Level.INFO, "Se elimino todo el carrito", id);
@@ -102,27 +142,6 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
         return em.createNamedQuery("Carrito.findByClientId", Carrito.class)
                 .setParameter("id", id)
                 .getResultList();
-    }
-
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Carrito> findAll() {
-        return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Carrito> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
     }
 
     @Override
