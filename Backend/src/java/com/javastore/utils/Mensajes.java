@@ -7,7 +7,7 @@ package com.javastore.utils;
 
 /**
  *
- * @author fjbatresv
+ * @author 
  */
 public class Mensajes {
 

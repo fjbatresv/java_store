@@ -29,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author fjbatresv
+ * @author 
  */
 @Stateless
 @Path("producto")

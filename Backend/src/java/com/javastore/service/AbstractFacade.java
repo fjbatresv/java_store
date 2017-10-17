@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 
 /**
  *
- * @author fjbatresv
+ * @author 
  */
 public abstract class AbstractFacade<T> {
 

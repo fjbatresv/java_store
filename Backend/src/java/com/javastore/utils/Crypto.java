@@ -11,7 +11,7 @@ import static jdk.nashorn.tools.ShellFunctions.input;
 
 /**
  *
- * @author fjbatresv
+ * @author 
  */
 public class Crypto {
 

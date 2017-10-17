@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author fjbatresv
+ * @author 
  */
 public class LoginDTO implements Serializable {
 

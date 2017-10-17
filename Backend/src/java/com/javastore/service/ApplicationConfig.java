@@ -10,7 +10,7 @@ import javax.ws.rs.core.Application;
 
 /**
  *
- * @author fjbatresv
+ * @author 
  */
 @javax.ws.rs.ApplicationPath("rest")
 public class ApplicationConfig extends Application {
