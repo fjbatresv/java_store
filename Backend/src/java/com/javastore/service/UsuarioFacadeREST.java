@@ -46,6 +46,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    //Agregar usuario administradores validando unico correo
     public ResponseHeader add(Usuario entity) {
         ResponseHeader respuesta = new ResponseHeader();
         try {
@@ -76,6 +77,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    //Edicion de un usuario validadndo cambios de contraseñas para sobreescribirlas
     public ResponseHeader edit(@PathParam("id") Integer id, Usuario entity) {
         ResponseHeader respuesta = new ResponseHeader();
         Usuario valid = em.createNamedQuery("Usuario.findById", Usuario.class)
@@ -103,6 +105,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @DELETE
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Intenta eliminar un usuario , de no poderse notifica la razon
     public ResponseHeader remove(@PathParam("id") Integer id) {
         ResponseHeader respuesta = new ResponseHeader();
         try {
@@ -123,6 +126,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @GET
     @Path("roles/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Obtener los roles de un usuario;
     public List<Rol> roles(@PathParam("id") Integer id) {
         Usuario usuario = em.createNamedQuery("Usuario.findById", Usuario.class)
                 .setParameter("id", id)
@@ -136,6 +140,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @Path("roles/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    //Se eliminan los roles a los que el usuario esta asignado y luego se agregan las nuevas relaciones
     public ResponseHeader setRoles(@PathParam("id") Integer id, List<Rol> roles) {
         ResponseHeader respuesta = new ResponseHeader();
         Usuario usuario = super.find(id);

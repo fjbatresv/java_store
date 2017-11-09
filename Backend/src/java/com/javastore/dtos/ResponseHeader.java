@@ -10,6 +10,7 @@ import java.io.Serializable;
 /**
  *
  * @author 
+ * Este objeto existe como base para todas las respuestas de los servicios
  */
 public class ResponseHeader implements Serializable {
 

@@ -10,6 +10,7 @@ import java.io.Serializable;
 /**
  *
  * @author javie
+ * Este objeto simplifica el envio de comentarios o texto plano del frontend al backend
  */
 public class TextoDTO implements Serializable{
     private String texto;

@@ -45,6 +45,7 @@ public class ExistenciaFacadeREST extends AbstractFacade<Existencia> {
     @GET
     @Path("producto/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Encuentra los registros de existencias del id de producto solicitado
     public List<Existencia> findByProducto(@PathParam("id") Integer id) {
         return em.createNamedQuery("Existencia.findByProductoId", Existencia.class)
                 .setParameter("id", id)

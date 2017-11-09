@@ -10,6 +10,7 @@ import java.io.Serializable;
 /**
  *
  * @author 
+ * Este objeto nos envia los datos del usuario o cliente que inicia sesion
  */
 public class LoginDTO implements Serializable {
 

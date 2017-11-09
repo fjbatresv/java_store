@@ -39,6 +39,7 @@ public class DetalleTransaccionFacadeREST extends AbstractFacade<DetalleTransacc
     @GET
     @Path("transaccion/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Devuelve el detalle del id de la transaccion enviada
     public List<DetalleTransaccion> byTransaccion(@PathParam("id") Integer id) {
         return em.createNamedQuery("DetalleTransaccion.findByTransaccionId", DetalleTransaccion.class)
                 .setParameter("id", id)
@@ -82,6 +83,7 @@ public class DetalleTransaccionFacadeREST extends AbstractFacade<DetalleTransacc
     @GET
     @Path("recent")
     @Produces({MediaType.APPLICATION_JSON})
+    //Devuelve los ultimos 20 productos comprados
     public List<Producto> recent() {
         return em.createNamedQuery("DetalleTransaccion.recent", Producto.class)
                 .setMaxResults(20)

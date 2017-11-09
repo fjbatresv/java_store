@@ -45,6 +45,7 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    //Agrega un producto validando que no se duplicen los codigos
     public ResponseHeader add(Producto entity) {
         ResponseHeader respuesta = new ResponseHeader();
         List<Producto> valid = em.createNamedQuery("Producto.findByCodigo", Producto.class)
@@ -69,6 +70,7 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    //edicion de un producto donde se valida que no haya mas que el mismo con ese codigo
     public ResponseHeader edit(@PathParam("id") Integer id, Producto entity) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);
@@ -91,6 +93,7 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     @DELETE
     @Produces({MediaType.APPLICATION_JSON})
     @Path("{id}")
+//    esto intenta eliminar un producto de no poderse completar notifica el error
     public ResponseHeader remove(@PathParam("id") Integer id) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);
@@ -111,6 +114,7 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     @GET
     @Path("by-categoria/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Obtiene el listado de productos por la categoria solicitada
     public List<Producto> byCategoria(@PathParam("id") Integer id) {
         return em.createNamedQuery("ProductoCategoria.findProductoByCategoriaId", Producto.class)
                 .setParameter("id", id)
@@ -120,6 +124,7 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     @Path("categorias/{id}")
+    //obtiene las categorias de un producto
     public List<Categoria> getCategorias(@PathParam("id") Integer id) {
         return em.createNamedQuery("ProductoCategoria.findCategoriaByProductoId", Categoria.class)
                 .setParameter("id", id)
@@ -130,6 +135,7 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
     @Path("categorias/{id}")
+    //Elimina las categorias a las que actualmente esta un producto y posteriormente le asigna las nuevas.
     public ResponseHeader setCategorias(@PathParam("id") Integer id, List<Categoria> categorias) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);
@@ -156,6 +162,7 @@ public class ProductoFacadeREST extends AbstractFacade<Producto> {
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
     @Path("existencia/{id}")
+    //Agrega existencias del producto
     public ResponseHeader setExistencia(@PathParam("id") Integer id, Existencia existencia) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);

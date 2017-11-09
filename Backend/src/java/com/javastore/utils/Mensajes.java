@@ -8,6 +8,7 @@ package com.javastore.utils;
 /**
  *
  * @author 
+ * Esta clase es solamente un catalogo de mensajes para las respuestas de los servicios
  */
 public class Mensajes {
 

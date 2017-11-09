@@ -30,7 +30,7 @@ CREATE TABLE `carrito` (
   KEY `carrito_fk_2` (`producto_id`),
   CONSTRAINT `carrito_fk_1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `carrito_fk_2` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `carrito` */
 
@@ -43,14 +43,9 @@ CREATE TABLE `categoria` (
   `nombre` varchar(200) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_name` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `categoria` */
-
-insert  into `categoria`(`id`,`nombre`) values 
-(2,'Joyeria'),
-(3,'Oro'),
-(4,'Plata');
 
 /*Table structure for table `cliente` */
 
@@ -65,12 +60,9 @@ CREATE TABLE `cliente` (
   `activo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_CLIENT_EMAIL` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `cliente` */
-
-insert  into `cliente`(`id`,`nombre`,`email`,`password`,`telefono`,`activo`) values 
-(1,'Javier Batres','me@fjbatresv.com','fddc06f29e95571fad58983ca9aa223da58303ac','42491978',1);
 
 /*Table structure for table `detalle_transaccion` */
 
@@ -86,13 +78,9 @@ CREATE TABLE `detalle_transaccion` (
   KEY `detalle_transaccion_fk_2` (`producto_id`),
   CONSTRAINT `detalle_transaccion_fk_1` FOREIGN KEY (`transaccion_id`) REFERENCES `transaccion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `detalle_transaccion_fk_2` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `detalle_transaccion` */
-
-insert  into `detalle_transaccion`(`id`,`transaccion_id`,`producto_id`,`precio`) values 
-(6,4,2,5000),
-(7,5,2,5000);
 
 /*Table structure for table `estado_transaccion` */
 
@@ -125,14 +113,9 @@ CREATE TABLE `existencia` (
   PRIMARY KEY (`id`),
   KEY `existencia_fk_1` (`producto_id`),
   CONSTRAINT `existencia_fk_1` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `existencia` */
-
-insert  into `existencia`(`id`,`producto_id`,`cantidad`,`costo`,`fecha_hora`) values 
-(1,2,20,3000,'2017-10-12 00:30:27'),
-(2,2,10,2500,'2017-10-12 00:36:55'),
-(3,2,10,3500,'2017-10-12 19:29:50');
 
 /*Table structure for table `flujo_transaccion` */
 
@@ -148,19 +131,9 @@ CREATE TABLE `flujo_transaccion` (
   KEY `flujo_transaccion_fk_2` (`estado_id`),
   CONSTRAINT `flujo_transaccion_fk_1` FOREIGN KEY (`transaccion_id`) REFERENCES `transaccion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `flujo_transaccion_fk_2` FOREIGN KEY (`estado_id`) REFERENCES `estado_transaccion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `flujo_transaccion` */
-
-insert  into `flujo_transaccion`(`id`,`transaccion_id`,`estado_id`,`comentario`) values 
-(1,4,1,'Orden nueva'),
-(2,4,3,'Mon Oct 16 23:52:45 CST 2017 | Por el usuario: 4'),
-(3,4,4,'Mon Oct 16 23:59:42 CST 2017 | Por el usuario: 4'),
-(4,4,5,'Mon Oct 16 23:59:46 CST 2017 | Por el usuario: 4'),
-(5,5,1,'Tue Oct 17 00:00:40 CST 2017'),
-(6,5,3,'Tue Oct 17 00:01:17 CST 2017 | Por el usuario: 4'),
-(7,5,4,'Tue Oct 17 00:01:20 CST 2017 | Por el usuario: 4'),
-(8,5,5,'Tue Oct 17 00:01:27 CST 2017 | Por el usuario: 4');
 
 /*Table structure for table `menu` */
 
@@ -194,12 +167,9 @@ CREATE TABLE `producto` (
   `foto` text COLLATE utf8_bin,
   PRIMARY KEY (`id`),
   UNIQUE KEY `CODE_PRODUCT` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `producto` */
-
-insert  into `producto`(`id`,`nombre`,`codigo`,`precio`,`foto`) values 
-(2,'Collar CHCH','0001',5000,'https://2f71c.https.cdn.softlayer.net/802F71C/1ahonu4ge.chcarolinaherrera.com/wcscontent/photos/CH/ATMP/AA/CA/AACA08RI07144/1500/AACA08RI07144_02.jpg');
 
 /*Table structure for table `producto_categoria` */
 
@@ -214,13 +184,9 @@ CREATE TABLE `producto_categoria` (
   KEY `producto_categoria_fk_2` (`categoria_id`),
   CONSTRAINT `producto_categoria_fk_1` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `producto_categoria_fk_2` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `producto_categoria` */
-
-insert  into `producto_categoria`(`id`,`producto_id`,`categoria_id`) values 
-(4,2,4),
-(5,2,2);
 
 /*Table structure for table `rol` */
 
@@ -274,13 +240,9 @@ CREATE TABLE `transaccion` (
   KEY `transaccion_cliente_fk_1` (`cliente_id`),
   CONSTRAINT `transaccion_cliente_fk_1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `transaccion_estado_fk_1` FOREIGN KEY (`estado_id`) REFERENCES `estado_transaccion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `transaccion` */
-
-insert  into `transaccion`(`id`,`cliente_id`,`destino`,`estado_id`) values 
-(4,1,'9na avenida 13-00 zona 12',5),
-(5,1,'Guatemala',5);
 
 /*Table structure for table `usuario` */
 
@@ -297,9 +259,7 @@ CREATE TABLE `usuario` (
 /*Data for the table `usuario` */
 
 insert  into `usuario`(`id`,`nombre`,`email`,`password`) values 
-(4,'Javier Batres','fjbatresv@gmail.com','fddc06f29e95571fad58983ca9aa223da58303ac'),
-(5,'Juan batres','jfbatres71@gmail.com','405372af098e9198127126a1e91a84cac8507de9'),
-(6,'Marian','marianravenclaw@gmail.com','7f28b3d79a9b3747b1879dd76ab933d093baf28e');
+(4,'Administrador','admin@store.com','f865b53623b121fd34ee5426c792e5c33af8c227');
 
 /*Table structure for table `usuario_rol` */
 
@@ -319,8 +279,7 @@ CREATE TABLE `usuario_rol` (
 /*Data for the table `usuario_rol` */
 
 insert  into `usuario_rol`(`id`,`usuario_id`,`rol_id`) values 
-(5,4,3),
-(6,6,3);
+(5,4,3);
 
 /*Table structure for table `usuario_menu` */
 

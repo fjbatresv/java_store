@@ -40,6 +40,7 @@ public class ClientSessionFacadeREST {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    //Mediante esta funcion se validan los credenciales de un usuario cliente
     public ResponseHeader login(LoginDTO entity) {
         ResponseHeader respuesta = new ResponseHeader();
         try {
@@ -69,6 +70,7 @@ public class ClientSessionFacadeREST {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //De esta forma se activa un usuario cliente
     public Cliente active(@PathParam("id") Integer id) {
         this.logger.log(Level.INFO, "Cliente activo");
         return em.createNamedQuery("Cliente.findById", Cliente.class)

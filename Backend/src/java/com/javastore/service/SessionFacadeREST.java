@@ -41,6 +41,7 @@ public class SessionFacadeREST {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    //Inicio de sesion de un usuario administrador
     public ResponseHeader login(LoginDTO entity) {
         ResponseHeader respuesta = new ResponseHeader();
         try {
@@ -70,6 +71,7 @@ public class SessionFacadeREST {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Obtener los datos del usuario activo
     public Usuario active(@PathParam("id") Integer id) {
         this.logger.log(Level.INFO, "Usuario activo");
         return em.createNamedQuery("Usuario.findById", Usuario.class)
@@ -80,6 +82,7 @@ public class SessionFacadeREST {
     @GET
     @Path("menus/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Obtener los menus a los que el usuario tiene acceso por sus roles
     public List<UsuarioMenu> menus(@PathParam("id") Integer id) {
         this.logger.log(Level.INFO, "Buscar menus del usuario");
         return em.createNamedQuery("UsuarioMenu.findByUid", UsuarioMenu.class)

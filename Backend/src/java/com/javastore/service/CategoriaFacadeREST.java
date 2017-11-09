@@ -41,6 +41,7 @@ public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    //En este metodo vemos el crear categorias chequeando anteriormente que no exista otra con el mismo nombre
     public ResponseHeader add(Categoria entity) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);
@@ -65,6 +66,7 @@ public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    //Este metodo edita una categoria existente y a la vez valida que no haya mas que la misma con ese nombre
     public ResponseHeader edit(@PathParam("id") Integer id, Categoria entity) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);
@@ -87,6 +89,7 @@ public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
 
     @DELETE
     @Path("{id}")
+    //Este metodo intenta eliminar una categoria y de no ser posible responde una excepcion custome
     public ResponseHeader remove(@PathParam("id") Integer id) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);

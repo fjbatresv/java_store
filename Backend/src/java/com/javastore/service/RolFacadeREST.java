@@ -44,6 +44,7 @@ public class RolFacadeREST extends AbstractFacade<Rol> {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    //Agrega un rol validando que no se repitan los nombres
     public ResponseHeader add(Rol entity) {
         ResponseHeader result = new ResponseHeader();
         List<Rol> roles = em.createNamedQuery("Rol.findByNombre", Rol.class)
@@ -71,6 +72,7 @@ public class RolFacadeREST extends AbstractFacade<Rol> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    //Edicion de un rol validando duplicados de nombres
     public ResponseHeader edit(@PathParam("id") Integer id, Rol entity) {
         ResponseHeader result = new ResponseHeader();
         result.setCodigo(0);
@@ -98,6 +100,7 @@ public class RolFacadeREST extends AbstractFacade<Rol> {
     @DELETE
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Intenta eliminar un nombre y de no poderse notifica el error.
     public ResponseHeader remove(@PathParam("id") Integer id) {
         ResponseHeader result = new ResponseHeader();
         result.setCodigo(0);
@@ -120,6 +123,7 @@ public class RolFacadeREST extends AbstractFacade<Rol> {
     @GET
     @Path("menus/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Obtenemos los menus que puede ver el rol
     public List<Menu> menus(@PathParam("id") Integer id) {
         return em.createNamedQuery("RolMenu.findMenusByRolId", Menu.class)
                 .setParameter("id", id)
@@ -130,6 +134,7 @@ public class RolFacadeREST extends AbstractFacade<Rol> {
     @Path("menus/{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    //Eliminamos los menus a los que se puede acceder con el rol y se asignan los nuevos
     public ResponseHeader setMenus(@PathParam("id") Integer id, List<Menu> menus) {
         ResponseHeader respuesta = new ResponseHeader();
         Rol rol = super.find(id);

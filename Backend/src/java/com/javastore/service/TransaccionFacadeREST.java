@@ -78,6 +78,7 @@ public class TransaccionFacadeREST extends AbstractFacade<Transaccion> {
     @GET
     @Path("cliente/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Obtener transacciones por cliente
     public List<Transaccion> byCliente(@PathParam("id") Integer id) {
         this.logger.log(Level.INFO, "Transacciones para el cliente " + String.valueOf(id));
         return em.createNamedQuery("Transaccion.findByClienteId", Transaccion.class)
@@ -88,6 +89,7 @@ public class TransaccionFacadeREST extends AbstractFacade<Transaccion> {
     @PUT
     @Path("cobro/{id}/{uid}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Realizar el cobro de una transaccion (esto fue deprecado ya que el usuario ahora paga al generar la transaccion)
     public ResponseHeader cobrar(@PathParam("id") Integer id, @PathParam("uid") Integer uid){
         ResponseHeader respuesta = new ResponseHeader();
         Transaccion transaccion = super.find(id);
@@ -113,6 +115,7 @@ public class TransaccionFacadeREST extends AbstractFacade<Transaccion> {
     @PUT
     @Path("enviar/{id}/{uid}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Enviar la orden a destino
     public ResponseHeader enviar(@PathParam("id") Integer id, @PathParam("uid") Integer uid){
         ResponseHeader respuesta = new ResponseHeader();
         Transaccion transaccion = super.find(id);
@@ -138,6 +141,7 @@ public class TransaccionFacadeREST extends AbstractFacade<Transaccion> {
     @PUT
     @Path("entrega/{id}/{uid}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Notificar de orden entregada
     public ResponseHeader entrega(@PathParam("id") Integer id, @PathParam("uid") Integer uid){
         ResponseHeader respuesta = new ResponseHeader();
         Transaccion transaccion = super.find(id);

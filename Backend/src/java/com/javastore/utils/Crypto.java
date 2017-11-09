@@ -17,14 +17,17 @@ public class Crypto {
 
     public static String sha1(String password) throws NoSuchAlgorithmException {
         String hashed = null;
+        //Transformador de texto
         MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+        //Respuesta del transformador en bytes
         byte[] result = mDigest.digest(password.getBytes());
+        //Constructor de string
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < result.length; i++) {
+            //agregando al constructor de String
             sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
         }
-        hashed =
-                sb.toString();
+        hashed = sb.toString();
         return hashed;
     }
 

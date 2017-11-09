@@ -23,10 +23,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  *
  * @author 
+ * Esta clase amarra la relacion del BEAN/POJO con la tabla de mysql
  */
 @Entity
 @Table(name = "carrito")
 @XmlRootElement
+//Las namedQueries son consultas previamente creadas para consultar la base de datos.
 @NamedQueries({
     @NamedQuery(name = "Carrito.findAll", query = "SELECT c FROM Carrito c")
     , @NamedQuery(name = "Carrito.findById", query = "SELECT c FROM Carrito c WHERE c.id = :id")
@@ -44,9 +46,11 @@ public class Carrito implements Serializable {
     @NotNull
     @Column(name = "precio")
     private double precio;
+    //Por medio de un JoinColumn hacemos referencia que este campo es una llave foranea
     @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Cliente clienteId;
+    //Por medio de un JoinColumn hacemos referencia que este campo es una llave foranea
     @JoinColumn(name = "producto_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Producto productoId;
@@ -95,6 +99,7 @@ public class Carrito implements Serializable {
         this.productoId = productoId;
     }
 
+    //Genera un indice para que el frontend y backend usen la misma variable
     @Override
     public int hashCode() {
         int hash = 0;
@@ -102,6 +107,7 @@ public class Carrito implements Serializable {
         return hash;
     }
 
+    //Nos permite validar si dos objetos en java son en realidad el mismo en la base de datos;
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -115,6 +121,7 @@ public class Carrito implements Serializable {
         return true;
     }
 
+    //Nos devuelve una forma custom del tostring de este objeto
     @Override
     public String toString() {
         return "com.javastore.entities.Carrito[ id=" + id + " ]";

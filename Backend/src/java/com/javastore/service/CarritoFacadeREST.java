@@ -5,8 +5,8 @@
  */
 package com.javastore.service;
 
+import com.javastore.dtos.CompraDTO;
 import com.javastore.dtos.ResponseHeader;
-import com.javastore.dtos.TextoDTO;
 import com.javastore.entities.Carrito;
 import com.javastore.entities.Cliente;
 import com.javastore.entities.DetalleTransaccion;
@@ -38,6 +38,7 @@ import javax.ws.rs.core.MediaType;
 @Path("carrito")
 public class CarritoFacadeREST extends AbstractFacade<Carrito> {
 
+    //Se esta inyectando la conexion a la base de datos
     @PersistenceContext(unitName = "BackendPU")
     private EntityManager em;
 
@@ -49,6 +50,7 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    //Mediante esta funcion se recibe la informacion necesaria para agregar el item al carrito
     public ResponseHeader add(Carrito entity, @PathParam("id") Integer id) {
         ResponseHeader respuesta = new ResponseHeader();
         Cliente cliente = em.createNamedQuery("Cliente.findById", Cliente.class)
@@ -67,7 +69,9 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseHeader checkout(@PathParam("id") Integer id, TextoDTO dto) {
+//    En este proceso se obtiene la direccion de envio y la tajeta del pago
+//    por ello se eliminan los registros del carrito y se trasladan a una nueva transaccion u orden
+    public ResponseHeader checkout(@PathParam("id") Integer id, CompraDTO dto) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);
         respuesta.setResultado(true);
@@ -78,7 +82,7 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
                 .setParameter("nombre", "Nueva")
                 .getSingleResult();
         Transaccion transaccion = new Transaccion();
-        transaccion.setDestino(dto.getTexto());
+        transaccion.setDestino(dto.getDestino());
         transaccion.setClienteId(cliente);
         transaccion.setEstadoId(estadoId);
         em.persist(transaccion);
@@ -88,6 +92,17 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
         flujo.setEstadoId(estadoId);
         flujo.setComentario(new Date().toString());
         em.persist(flujo);
+        estadoId = em.createNamedQuery("EstadoTransaccion.findByNombre", EstadoTransaccion.class)
+                .setParameter("nombre", "Pagada")
+                .getSingleResult();
+        transaccion.setEstadoId(estadoId);
+        em.merge(transaccion);
+        em.flush();
+        FlujoTransaccion flujoPago = new FlujoTransaccion();
+        flujoPago.setTransaccionId(transaccion);
+        flujoPago.setEstadoId(estadoId);
+        flujoPago.setComentario("Tarjeta: " + dto.getTarjeta() + " | " + new Date().toString());
+        em.persist(flujoPago);
         respuesta.setResponse(transaccion.getId());
         respuesta.setMensaje(Mensajes.carritoCheckout.replace("%id%", String.valueOf(transaccion.getId())));
         List<Carrito> carro = em.createNamedQuery("Carrito.findByClientId", Carrito.class)
@@ -107,6 +122,7 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
     @DELETE
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //De esta manera se elimina un objeto del carrito
     public ResponseHeader remove(@PathParam("id") Integer id) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);
@@ -120,6 +136,7 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
     @DELETE
     @Path("all/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //De esta manera se elimina todo lo que se encuentra en el carrito
     public ResponseHeader removeAll(@PathParam("id") Integer id) {
         ResponseHeader respuesta = new ResponseHeader();
         respuesta.setCodigo(0);
@@ -138,6 +155,7 @@ public class CarritoFacadeREST extends AbstractFacade<Carrito> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    //Esta funcion obtiene el carrito por usuario
     public List<Carrito> byuser(@PathParam("id") Integer id) {
         return em.createNamedQuery("Carrito.findByClientId", Carrito.class)
                 .setParameter("id", id)

@@ -11,6 +11,7 @@ angular.module('doorman.controllers')
                 });
             }
             $scope.cargar();
+            $scope.pago = {};
             $scope.next = function (ev) {
                 // Appending dialog to document.body to cover sidenav in docs app
                 var confirm = $mdDialog.prompt()
@@ -24,26 +25,40 @@ angular.module('doorman.controllers')
                         .cancel('Cancelar');
 
                 $mdDialog.show(confirm).then(function (result) {
-                    var result = {"texto": result};
-                    CarritoFactory.checkout({id: $cookies.get('client')}, result, function (res) {
-                        if (res.codigo === 0) {
-                            $mdToast.show(
-                                    $mdToast.simple()
-                                    .textContent(res.mensaje)
-                                    .position('top right')
-                                    .hideDelay(1500)
-                                    );
-                            $scope.cargar();
-                        } else {
-                            $mdDialog.show(
-                                    $mdDialog.alert()
-                                    .parent(angular.element(document.querySelector('#popupContainer')))
-                                    .clickOutsideToClose(true)
-                                    .title('Hubo un problema')
-                                    .textContent(res.mensaje)
-                                    .ok('Ok')
-                                    );
-                        }
+                    $scope.pago.destino = result;
+                    var cardConfirm = $mdDialog.prompt()
+                            .title('Ingresa tu numero de tarjeta de credito')
+                            .textContent('Debes estar presente el propietario de la tarjeta')
+                            .placeholder('0000-0000-0000-0000')
+                            .ariaLabel('card')
+                            .targetEvent(ev)
+                            .ok('Ok!')
+                            .cancel('Cancelar');
+
+                    $mdDialog.show(cardConfirm).then(function (resulta) {
+                        $scope.pago.tarjeta = resulta;
+                        CarritoFactory.checkout({id: $cookies.get('client')}, $scope.pago, function (res) {
+                            if (res.codigo === 0) {
+                                $mdToast.show(
+                                        $mdToast.simple()
+                                        .textContent(res.mensaje)
+                                        .position('top right')
+                                        .hideDelay(1500)
+                                        );
+                                $scope.cargar();
+                            } else {
+                                $mdDialog.show(
+                                        $mdDialog.alert()
+                                        .parent(angular.element(document.querySelector('#popupContainer')))
+                                        .clickOutsideToClose(true)
+                                        .title('Hubo un problema')
+                                        .textContent(res.mensaje)
+                                        .ok('Ok')
+                                        );
+                            }
+                        });
+                    }, function () {
+
                     });
                 }, function () {
 
